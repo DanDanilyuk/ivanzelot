@@ -31,13 +31,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # No ruby-version given: setup-ruby reads .ruby-version itself. Passing
+      # ruby-version-file is not a valid input and only produces a warning.
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version-file: .ruby-version
           bundler-cache: true
 
+      # enablement: true turns Pages on and sets the source to Actions via the
+      # API, so the site does not have to be enabled by hand in Settings.
       - uses: actions/configure-pages@v5
         id: pages
+        with:
+          enablement: true
 
       - name: Build site
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
