@@ -5,7 +5,7 @@ title: Афоризми
 heading: Aphorisms
 permalink: /aphorisms/
 categories: aphorisms
-# published: false
+published: false
 ---
 
 {%- assign sorted_posts = site.categories.aphorisms | sort: 'number' | reverse -%}
