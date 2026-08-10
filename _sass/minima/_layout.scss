@@ -48,11 +48,24 @@
 .site-footer {
   border-top: 1px solid $grey-color-light;
   padding: $spacing-unit 0;
+  text-align: center;
+}
+
+.footer-text {
+  @include relative-font-size(0.9375);
+  color: $grey-color;
+  margin-bottom: 0;
+}
+
+// social.html renders an empty list when no accounts are configured; without
+// this it would still contribute its bottom margin to the centred footer.
+.social-media-list:empty {
+  display: none;
 }
 
 .footer-heading {
   @include relative-font-size(1.125);
-  margin-bottom: $spacing-unit / 2;
+  margin-bottom: $spacing-unit * 0.5;
 }
 
 .contact-list,
@@ -64,14 +77,14 @@
 .footer-col-wrapper {
   @include relative-font-size(0.9375);
   color: $grey-color;
-  margin-left: -$spacing-unit / 2;
+  margin-left: -$spacing-unit * 0.5;
   @extend %clearfix;
 }
 
 .footer-col {
   float: left;
-  margin-bottom: $spacing-unit / 2;
-  padding-left: $spacing-unit / 2;
+  margin-bottom: $spacing-unit * 0.5;
+  padding-left: $spacing-unit * 0.5;
 }
 
 .footer-col-1 {
