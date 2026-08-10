@@ -11,8 +11,26 @@
 <meta property="og:image:alt" content="Michael Kavchak">
 <meta property="og:site_name" content="Michael Kavchak">
 <link rel="alternate" type="application/rss+xml" title="{{ site.title }} RSS Feed" href="{{ site.url }}/feed.xml" />
-<html
-  lang="{% if page.path contains 'ukr' %}uk{% elsif page.path contains 'latin_25' %}latin{% elsif page.path contains 'eng' %}en{% else %}uk{% endif %}">
+{%- comment -%}
+Resolve the UI language once: listing pages declare `lang` in front matter,
+poem posts fall back to their category. `t` is then available to every include.
+{%- endcomment -%}
+{%- if page.lang -%}
+  {%- assign lang_key = page.lang -%}
+{%- elsif page.categories contains 'ukr' -%}
+  {%- assign lang_key = 'ukr' -%}
+{%- elsif page.categories contains 'latin_25' -%}
+  {%- assign lang_key = 'latin_25' -%}
+{%- else -%}
+  {%- assign lang_key = 'en' -%}
+{%- endif -%}
+{%- assign t = site.data.i18n[lang_key] -%}
+{%- case lang_key -%}
+  {%- when 'ukr' -%}{%- assign html_lang = 'uk' -%}
+  {%- when 'latin_25' -%}{%- assign html_lang = 'uk-Latn' -%}
+  {%- else -%}{%- assign html_lang = 'en' -%}
+{%- endcase -%}
+<html lang="{{ html_lang }}">
 
 {%- include head.html -%}
 

@@ -1,0 +1,51 @@
+{%- comment -%}
+Poem listing with client-side search and pagination.
+Required param: category - the site.categories key to list, e.g. "ukr".
+UI strings come from _data/i18n.yml, keyed by the page's `lang` front matter.
+This include renders before the layout, so it resolves `t` itself.
+{%- endcomment -%}
+{%- assign t = site.data.i18n[page.lang] | default: site.data.i18n.en -%}
+<div class="poem-index"
+  data-poem-index
+  data-units="{{ t.units }}"
+  data-of="{{ t.of }}"
+  data-empty="{{ t.empty }}"
+  data-plural="{{ t.plural }}"
+  data-page-label="{{ t.page_label }}">
+
+<div class="poem-search" hidden data-poem-search-row>
+<label class="poem-search__label" for="poem-search">{{ t.search }}</label>
+<input class="poem-search__input" id="poem-search" type="search" placeholder="{{ t.search }}" autocomplete="off" data-poem-search>
+<span class="poem-search__count" aria-live="polite" data-poem-count></span>
+</div>
+
+<p class="poem-empty" hidden data-poem-empty><span data-poem-empty-text></span> <button type="button" class="poem-empty__clear" data-poem-clear>{{ t.clear }}</button></p>
+
+{%- assign sorted_posts = site.categories[include.category] | sort: 'number' | reverse -%}
+{%- for post in sorted_posts -%}
+{% if post.categories contains 'delete' %}
+{%- continue -%}
+{% endif %}
+
+  <div class="post-data" data-number="{{ post.number }}">
+    {{ post.content }}
+    <h3 class="number-field">
+      <a href="{{ post.url }}">
+        {{ post.number }}-{{ post.edits }}
+      </a>
+    </h3>
+    <h3 class="type-field">
+      @@
+    </h3>
+  </div>
+{%- endfor -%}
+
+<nav class="poem-pager" aria-label="{{ t.pages_label }}" hidden data-poem-pager>
+<button type="button" class="poem-pager__btn" data-poem-prev>{{ t.prev }}</button>
+<span class="poem-pager__numbers" data-poem-numbers></span>
+<button type="button" class="poem-pager__btn" data-poem-next>{{ t.next }}</button>
+</nav>
+
+</div>
+
+<script src="{{ '/assets/js/poem-index.js' | relative_url }}" defer></script>

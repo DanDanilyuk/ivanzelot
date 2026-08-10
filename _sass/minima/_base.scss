@@ -57,7 +57,7 @@ ol,
 dl,
 figure,
 %vertical-rhythm {
-  margin-bottom: $spacing-unit / 2;
+  margin-bottom: $spacing-unit * 0.5;
 }
 
 /**
@@ -121,7 +121,7 @@ a {
   text-decoration: none;
 
   &:visited {
-    color: darken($brand-color, 15%);
+    color: adjust-color($brand-color, $lightness: -15%);
   }
 
   &:hover {
@@ -144,7 +144,7 @@ a {
 blockquote {
   color: $grey-color;
   border-left: 4px solid $grey-color-light;
-  padding-left: $spacing-unit / 2;
+  padding-left: $spacing-unit * 0.5;
   @include relative-font-size(1.125);
   letter-spacing: -1px;
   font-style: italic;
@@ -195,8 +195,8 @@ pre {
   @include media-query($on-laptop) {
     max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
     max-width: calc(#{$content-width} - (#{$spacing-unit}));
-    padding-right: $spacing-unit / 2;
-    padding-left: $spacing-unit / 2;
+    padding-right: $spacing-unit * 0.5;
+    padding-left: $spacing-unit * 0.5;
   }
 }
 
@@ -235,22 +235,22 @@ table {
   margin-bottom: $spacing-unit;
   width: 100%;
   text-align: $table-text-align;
-  color: lighten($text-color, 18%);
+  color: adjust-color($text-color, $lightness: 18%);
   border-collapse: collapse;
   border: 1px solid $grey-color-light;
   tr {
     &:nth-child(even) {
-      background-color: lighten($grey-color-light, 6%);
+      background-color: adjust-color($grey-color-light, $lightness: 6%);
     }
   }
   th,
   td {
-    padding: ($spacing-unit / 3) ($spacing-unit / 2);
+    padding: calc($spacing-unit / 3) ($spacing-unit * 0.5);
   }
   th {
-    background-color: lighten($grey-color-light, 3%);
-    border: 1px solid darken($grey-color-light, 4%);
-    border-bottom-color: darken($grey-color-light, 12%);
+    background-color: adjust-color($grey-color-light, $lightness: 3%);
+    border: 1px solid adjust-color($grey-color-light, $lightness: -4%);
+    border-bottom-color: adjust-color($grey-color-light, $lightness: -12%);
   }
   td {
     border: 1px solid $grey-color-light;
@@ -268,4 +268,165 @@ table {
 
 .type-field {
   margin-bottom: 0px;
+}
+
+/**
+ * Poem index: search + pagination
+ */
+// These set `display`, so the `hidden` attribute needs to win explicitly.
+.poem-search[hidden],
+.poem-pager[hidden] {
+  display: none;
+}
+
+.post-data.is-hidden {
+  display: none;
+}
+
+.poem-search {
+  display: flex;
+  align-items: center;
+  gap: $spacing-unit * 0.5;
+  margin-bottom: $spacing-unit;
+}
+
+.poem-search__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.poem-search__input {
+  flex: 0 1 320px;
+  min-width: 0;
+  padding: 7px 12px;
+  border: 1px solid $grey-color-light;
+  border-radius: 8px;
+  background-color: $background-color;
+  color: $text-color;
+  font-family: inherit;
+  line-height: 1.4;
+  @include relative-font-size(0.9375);
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &::placeholder {
+    color: $grey-color;
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: adjust-color($grey-color-light, $lightness: -8%);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $brand-color;
+    box-shadow: 0 0 0 3px rgba($brand-color, 0.15);
+  }
+}
+
+.poem-search__count {
+  flex: 0 0 auto;
+  color: $grey-color;
+  font-variant-numeric: tabular-nums;
+  @include relative-font-size(0.8125);
+}
+
+.poem-empty {
+  margin: $spacing-unit 0;
+  color: $grey-color;
+}
+
+.poem-empty__clear {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: $brand-color;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.poem-pager {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: $spacing-unit;
+  margin-top: $spacing-unit;
+  padding-top: $spacing-unit * 0.5;
+  border-top: 1px solid $grey-color-light;
+  @include relative-font-size(0.875);
+}
+
+.poem-pager__btn {
+  flex: 0 0 auto;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: $brand-color;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    color: $grey-color-light;
+    cursor: default;
+  }
+}
+
+.poem-pager__numbers {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.poem-pager__num {
+  min-width: 26px;
+  padding: 4px 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: $brand-color;
+  font-family: inherit;
+  font-size: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: $grey-color-light;
+  }
+
+  &.is-current {
+    color: $text-color;
+    font-weight: 600;
+    cursor: default;
+  }
+}
+
+.poem-pager__gap {
+  padding: 0 2px;
+  color: $grey-color-light;
+}
+
+@include media-query($on-palm) {
+  .poem-pager {
+    gap: $spacing-unit * 0.5;
+  }
 }

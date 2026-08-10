@@ -2,7 +2,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {%- seo -%}
+  {%- comment -%}
+  seo builds <title> from site.title, which is fixed across languages, so we
+  turn that one tag off and emit a per-language title ourselves.
+  {%- endcomment -%}
+  {%- seo title=false -%}
+  <title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ t.site_title | default: site.title | escape }}</title>
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}

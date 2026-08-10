@@ -4,9 +4,9 @@
     {%- assign sorted_pages = site.pages | sort: "weight" -%}
     {%- assign default_paths = sorted_pages | map: "path" -%}
     {%- assign page_paths = site.header_pages | default: default_paths -%}
-    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ t.site_title | default: site.title | escape }}</a>
 
-    <h2>{{ page.heading | default: "Poems" }}</h2>
+    <h2>{{ page.heading | default: t.heading }}</h2>
 
     {%- if page_paths -%}
     <nav class="site-nav">
