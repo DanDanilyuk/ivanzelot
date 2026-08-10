@@ -24,7 +24,7 @@ email: MKavchak@yahoo.com
 description: >- # this means to ignore newlines until "baseurl:"
   A personal blog for poems by Іван Зелот
 baseurl: '' # the subpath of your site, e.g. /blog
-url: 'https://michaelkavchak.com' # the base hostname & protocol for your site, e.g. http://example.com
+url: 'https://ivanzelot.com' # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb
 # github_username:  jekyll
 permalink: pretty
@@ -40,6 +40,7 @@ kramdown:
   hard_wrap: true
 exclude:
   - CLAUDE.md
+  - new_poems_raw # 131MB of source documents; never publish
 
 # Exclude from processing.
 # The following items will not be processed, by default.

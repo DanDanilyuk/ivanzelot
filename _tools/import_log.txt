@@ -1,0 +1,157 @@
+Poem import report
+Generated: 2026-08-10   mode: WRITE
+Source: new_poems_raw (80 documents)
+========================================================================
+
+SUMMARY
+  poems found          802
+  new (not published)  316
+  changed text         463
+  unchanged            23
+  images linked        293
+  latin letters fixed  36 distinct words
+  documents unreadable 0
+
+POEMS WHOSE NUMBER WAS MISSING AND WAS INFERRED FROM ITS NEIGHBOURS  [1]
+  12PoezU-121-130.pages: a poem had no number; it sits between 124 and 122, so it must be 123
+      Не зрозумів. Знову. / Кликав Бог до абсурдних речей.
+
+NOTES WITH NO NUMBER, KEPT WITH THE POEM THAT FOLLOWS  [4]
+  18PoezU181-190.pages: a note with no number was kept with poem 189
+      Не покинувши вчорашнього, / А з ним і сучасного,
+  42PoezU-421-430.pages: a note with no number was kept with poem 422
+      (співавторство зі скромним початківцем)
+  44PoezU-441-450.pages: a note with no number was kept with poem 441
+      (Богдану Смоляку присвячується. / Мудрості його спостережень)
+  56PoezU-561-570.pages: a note with no number was kept with poem 563
+      (Дружина поставила трійку, сам оцінюю на десятку, може хтось хоч четвірку поставить :)
+
+DUPLICATE POEM NUMBERS  [1]
+  53PoezU-531-540.pages, 54PoezU-541-550.pages: number 541 is used by 2 DIFFERENT poems - kept the copy from 54PoezU-541-550.pages; the other is reproduced below and was NOT written
+
+BLOCKS SPLIT ON '@' INTO CONTINUATION POSTS  [2]
+  03PoezU-31-40.pages: block 35-9 contained 1 '@' divider(s) -> 2 posts: 35-1, 35-2
+  11PoezU-111-120.pages: block 111-8 contained 2 '@' divider(s) -> 3 posts: 111-1, 111-2, 111-3
+
+FULL TEXT OF POEMS NOT WRITTEN BECAUSE THEIR NUMBER WAS TAKEN  [1]
+(nothing is lost - assign each a free number and re-run)
+  --- number 541 from 53PoezU-531-540.pages
+      Відстійник гною в селі, а не хата.
+      Бруднішого місця, здається, й нема.
+      Гарні навколо дівчата,
+      Але тут народилась Вона.
+      
+      Тут і живе, приймаючи долю,
+      Звичайна на людях, шанує батьків.
+      Кохана, куди б не блукав за тобою,
+      Найбільше сюди б приходИв.
+      
+      Мене називають пропащим.
+      Незважаючи на односельчан,
+      Найгірше стає найкращим
+      З ароматом бузку і троянд.
+
+LATIN LETTERS REPLACED WITH THEIR CYRILLIC TWINS  [36]
+  A (on its own)  ->  А
+  B (on its own)  ->  В
+  Hавіщо  ->  Навіщо
+  Hедосяжну  ->  Недосяжну
+  aнгелів  ->  ангелів
+  i (on its own)  ->  і
+  iстина  ->  істина
+  iстини  ->  істини
+  iстину  ->  істину
+  oсамітненим  ->  осамітненим
+  ІвAнова  ->  ІвАнова
+  Благословiння  ->  Благословіння
+  Думкy  ->  Думку
+  НовI  ->  НовІ
+  ПеревихOвували  ->  ПеревихОвували
+  ПрOбував  ->  ПрОбував
+  Розcіяними  ->  Розсіяними
+  абo  ->  або
+  впадEш  ->  впадЕш
+  всьOго  ->  всьОго
+  відірвE  ->  відірвЕ
+  візьмEться  ->  візьмЕться
+  дIвчина  ->  дІвчина
+  дoпомагали  ->  допомагали
+  дорOгою  ->  дорОгою
+  дорогA  ->  дорогА
+  кайлoм  ->  кайлом
+  ненaвисті  ->  ненависті
+  неприлюднo  ->  неприлюдно
+  пOрвана  ->  пОрвана
+  прOшу  ->  прОшу
+  підвлаcний  ->  підвласний
+  підхiд  ->  підхід
+  рукaми  ->  руками
+  спокOю  ->  спокОю
+  тEбе  ->  тЕбе
+
+CHANGED POEMS (text differs from what is published)  [463]
+  10 (00PoezU-0-10.pages)
+  9 (00PoezU-0-10.pages)
+  8 (00PoezU-0-10.pages)
+  7 (00PoezU-0-10.pages)
+  6 (00PoezU-0-10.pages)
+  5 (00PoezU-0-10.pages)
+  4 (00PoezU-0-10.pages)
+  3 (00PoezU-0-10.pages)
+  1 (00PoezU-0-10.pages)
+  20 (01PoezU-11-20.pages)
+  19 (01PoezU-11-20.pages)
+  18 (01PoezU-11-20.pages)
+  17 (01PoezU-11-20.pages)
+  16 (01PoezU-11-20.pages)
+  15 (01PoezU-11-20.pages)
+  14 (01PoezU-11-20.pages)
+  13 (01PoezU-11-20.pages)
+  12 (01PoezU-11-20.pages)
+  11 (01PoezU-11-20.pages)
+  30 (02PoezU-21-30.pages)
+  29 (02PoezU-21-30.pages)
+  28 (02PoezU-21-30.pages)
+  27 (02PoezU-21-30.pages)
+  26 (02PoezU-21-30.pages)
+  25 (02PoezU-21-30.pages)
+  24 (02PoezU-21-30.pages)
+  23 (02PoezU-21-30.pages)
+  22 (02PoezU-21-30.pages)
+  21 (02PoezU-21-30.pages)
+  40 (03PoezU-31-40.pages)
+  39 (03PoezU-31-40.pages)
+  38 (03PoezU-31-40.pages)
+  37 (03PoezU-31-40.pages)
+  36 (03PoezU-31-40.pages)
+  34 (03PoezU-31-40.pages)
+  33 (03PoezU-31-40.pages)
+  32 (03PoezU-31-40.pages)
+  31 (03PoezU-31-40.pages)
+  50 (04PoezU-41-50.pages)
+  48 (04PoezU-41-50.pages)
+  47 (04PoezU-41-50.pages)
+  45 (04PoezU-41-50.pages)
+  44 (04PoezU-41-50.pages)
+  43 (04PoezU-41-50.pages)
+  42 (04PoezU-41-50.pages)
+  41 (04PoezU-41-50.pages)
+  60 (05PoezU-51-60.pages)
+  59 (05PoezU-51-60.pages)
+  58 (05PoezU-51-60.pages)
+  57 (05PoezU-51-60.pages)
+  56 (05PoezU-51-60.pages)
+  55 (05PoezU-51-60.pages)
+  54 (05PoezU-51-60.pages)
+  53 (05PoezU-51-60.pages)
+  51 (05PoezU-51-60.pages)
+  70 (06PoezU-61-70.pages)
+  69 (06PoezU-61-70.pages)
+  68 (06PoezU-61-70.pages)
+  67 (06PoezU-61-70.pages)
+  66 (06PoezU-61-70.pages)
+  ... 403 more
+
+NEW POEMS  [316]
+  35-1, 35-2, 111-1, 111-2, 111-3, 259, 418, 500, 499, 498, 497, 496, 495, 494, 493, 492, 491, 510, 509, 508, 507, 506, 505, 504, 503, 502, 501, 520, 519, 518, 517, 516, 515, 514, 513, 512, 511, 530, 529, 528, 527, 526, 525, 524, 523, 522, 521, 540, 539, 538, 537, 536, 535, 534, 533, 532, 531, 550, 549, 548, 547, 546, 545, 544, 543, 542, 541, 560, 559, 558, 557, 556, 555, 554, 553, 552, 551, 570, 569, 568
+  ... 236 more
