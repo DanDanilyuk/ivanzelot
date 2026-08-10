@@ -1,23 +1,26 @@
 name: Build and deploy site
 
+# The repository is private, so GitHub Pages cannot publish it (that needs a
+# paid plan). Instead this builds the site here and uploads the finished HTML
+# to Cloudflare Pages, which serves ivanzelot.com. Cloudflare never needs
+# access to the repository - only the built output is sent.
+#
+# Two repository secrets are required, under Settings > Secrets and variables
+# > Actions:
+#   CLOUDFLARE_API_TOKEN   a token with the "Cloudflare Pages: Edit" permission
+#   CLOUDFLARE_ACCOUNT_ID  the account ID shown in the Cloudflare dashboard
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# Allow GITHUB_TOKEN to deploy to GitHub Pages.
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Let a running deploy finish; queue at most one more.
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,22 +30,14 @@ jobs:
           ruby-version-file: .ruby-version
           bundler-cache: true
 
-      - uses: actions/configure-pages@v5
-        id: pages
-
       - name: Build site
-        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        run: bundle exec jekyll build
         env:
           JEKYLL_ENV: production
 
-      - uses: actions/upload-pages-artifact@v3
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/deploy-pages@v4
-        id: deployment
+      - name: Upload to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy _site --project-name=ivanzelot --branch=main
