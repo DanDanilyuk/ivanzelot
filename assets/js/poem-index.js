@@ -177,6 +177,10 @@
     turn(page + 1);
   });
 
+  // Nothing to search or page through: leave the controls hidden rather than
+  // showing an empty search box and a "no matches" message.
+  if (items.length === 0) return;
+
   search.hidden = false;
   render();
 })();

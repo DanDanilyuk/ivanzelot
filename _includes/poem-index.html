@@ -21,7 +21,16 @@ This include renders before the layout, so it resolves `t` itself.
 
 <p class="poem-empty" hidden data-poem-empty><span data-poem-empty-text></span> <button type="button" class="poem-empty__clear" data-poem-clear>{{ t.clear }}</button></p>
 
-{%- assign sorted_posts = site.categories[include.category] | sort: 'number' | reverse -%}
+{%- comment -%}
+A category with no posts yet is nil, and sorting nil aborts the whole build,
+so fall back to an empty list.
+{%- endcomment -%}
+{%- assign cat_posts = site.categories[include.category] -%}
+{%- if cat_posts -%}
+  {%- assign sorted_posts = cat_posts | sort: 'number' | reverse -%}
+{%- else -%}
+  {%- assign sorted_posts = "" | split: "" -%}
+{%- endif -%}
 {%- for post in sorted_posts -%}
 {% if post.categories contains 'delete' %}
 {%- continue -%}

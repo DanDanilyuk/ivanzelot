@@ -16,6 +16,20 @@ layout: default
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
+    {%- comment -%}
+    Images sit above the poem, which is where they appear in the author's
+    documents: 263 of the 293 anchors are attached to the "@@" line that opens
+    a poem. They live in front matter rather than in the body, so they show on
+    the post page only and never in the listing pages.
+    {%- endcomment -%}
+    {%- if page.images and page.images.size > 0 -%}
+    <div class="poem-images">
+      {%- for img in page.images -%}
+      <img src="{{ '/assets/poem_images/' | append: img | relative_url }}" alt="Ілюстрація до вірша {{ page.number }}" loading="lazy">
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+
     {{ content }}
   </div>
 

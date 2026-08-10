@@ -430,3 +430,35 @@ table {
     gap: $spacing-unit * 0.5;
   }
 }
+
+/**
+ * Poem illustrations (post page only - never rendered in the listings)
+ */
+.poem-images {
+  margin-bottom: $spacing-unit;
+
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto $spacing-unit * 0.5;
+  }
+}
+
+/**
+ * Stanza spacing: a blank line in the poem should read as a blank line.
+ * The default paragraph margin is smaller than one line, which pulls
+ * stanzas tighter than the poet set them.
+ */
+.post-data p,
+.post-content p {
+  margin-bottom: $base-line-height * 1em;
+}
+
+/**
+ * A deliberate pause the poet left in the text (two or more blank lines),
+ * as distinct from the single blank line that separates stanzas.
+ */
+.poem-gap {
+  height: $base-line-height * 3em;
+}
