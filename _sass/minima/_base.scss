@@ -440,6 +440,11 @@ table {
   img {
     display: block;
     max-width: 100%;
+    // Portrait illustrations are much taller than wide (791 is 1290x1743) and
+    // would otherwise push the poem off the screen. A percentage would need a
+    // parent of definite height, so this is measured against the viewport.
+    max-height: 30vh;
+    width: auto;
     height: auto;
     margin: 0 auto $spacing-unit * 0.5;
   }
