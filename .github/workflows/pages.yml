@@ -1,19 +1,21 @@
 name: Build and deploy site
 
-# The repository is private, so GitHub Pages cannot publish it (that needs a
-# paid plan). Instead this builds the site here and uploads the finished HTML
-# to Cloudflare Pages, which serves ivanzelot.com. Cloudflare never needs
-# access to the repository - only the built output is sent.
+# The repository is private, so GitHub Pages cannot publish it - that needs a
+# paid plan. Instead this builds the site here and commits the result to the
+# `deploy` branch, which Cloudflare Pages serves with no build step of its own.
 #
-# Two repository secrets are required, under Settings > Secrets and variables
-# > Actions:
-#   CLOUDFLARE_API_TOKEN   a token with the "Cloudflare Pages: Edit" permission
-#   CLOUDFLARE_ACCOUNT_ID  the account ID shown in the Cloudflare dashboard
+# `deploy` is written as a single-commit orphan and force-pushed every run, so
+# it never accumulates history. Cloudflare keeps its own deployment history.
+#
+# No secrets are needed: the automatic GITHUB_TOKEN can push the branch.
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: write # to push the deploy branch
 
 concurrency:
   group: deploy
@@ -35,9 +37,17 @@ jobs:
         env:
           JEKYLL_ENV: production
 
-      - name: Upload to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy _site --project-name=ivanzelot --branch=main
+      - name: Publish built site to the deploy branch
+        # git init runs INSIDE _site, so this is a throwaway repository: the
+        # root .gitignore (which ignores _site) does not apply, and the source
+        # history is never involved.
+        run: |
+          cd _site
+          git init -q -b deploy
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Site built from ${GITHUB_SHA}"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" deploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
