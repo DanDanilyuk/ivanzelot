@@ -1,13 +1,14 @@
 name: Build and deploy site
 
-# The repository is private, so GitHub Pages cannot publish it - that needs a
-# paid plan. Instead this builds the site here and commits the result to the
-# `deploy` branch, which Cloudflare Pages serves with no build step of its own.
+# Builds the site with this repository's own Jekyll (4.x) and publishes it to
+# GitHub Pages. GitHub's built-in Pages build is not used: it runs Jekyll 3.10
+# via the github-pages gem, which this Gemfile no longer depends on.
 #
-# `deploy` is written as a single-commit orphan and force-pushed every run, so
-# it never accumulates history. Cloudflare keeps its own deployment history.
+# Requires the repository to be PUBLIC (Pages cannot publish a private repo on
+# the free plan) and Settings > Pages > Source set to "GitHub Actions".
 #
-# No secrets are needed: the automatic GITHUB_TOKEN can push the branch.
+# The custom domain comes from the CNAME file in the repository root, which
+# Jekyll copies into the built site.
 
 on:
   push:
@@ -15,14 +16,17 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # to push the deploy branch
+  contents: read
+  pages: write
+  id-token: write
 
+# Let a running deploy finish; queue at most one more.
 concurrency:
-  group: deploy
+  group: pages
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,22 +36,22 @@ jobs:
           ruby-version-file: .ruby-version
           bundler-cache: true
 
+      - uses: actions/configure-pages@v5
+        id: pages
+
       - name: Build site
-        run: bundle exec jekyll build
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
 
-      - name: Publish built site to the deploy branch
-        # git init runs INSIDE _site, so this is a throwaway repository: the
-        # root .gitignore (which ignores _site) does not apply, and the source
-        # history is never involved.
-        run: |
-          cd _site
-          git init -q -b deploy
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -qm "Site built from ${GITHUB_SHA}"
-          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" deploy
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
