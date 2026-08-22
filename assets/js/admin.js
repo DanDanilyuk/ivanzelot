@@ -44,14 +44,15 @@
 
   function api(path, opts) {
     opts = opts || {};
+    var headers = {
+      Accept: 'application/vnd.github+json',
+      Authorization: 'Bearer ' + token(),
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+    if (opts.body) headers['Content-Type'] = 'application/json';
     return fetch('https://api.github.com/repos/' + repo + path, {
       method: opts.method || 'GET',
-      headers: {
-        Accept: 'application/vnd.github+json',
-        Authorization: 'Bearer ' + token(),
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Content-Type': 'application/json'
-      },
+      headers: headers,
       body: opts.body ? JSON.stringify(opts.body) : undefined
     }).then(function (res) {
       return res.json().then(function (data) {
@@ -60,6 +61,8 @@
           throw new Error(msg);
         }
         return data;
+      }, function () {
+        throw new Error('HTTP ' + res.status);
       });
     });
   }
@@ -357,22 +360,42 @@
       setStatus('Введіть пароль.', 'error');
       return;
     }
+    if (!window.crypto || !crypto.subtle) {
+      setStatus('Потрібен HTTPS і сучасний браузер (Web Crypto).', 'error');
+      return;
+    }
     loginBtn.disabled = true;
-    setStatus('Перевірка…');
-    unlockToken(password, lock).then(function (t) {
-      sessionStorage.setItem(TOKEN_KEY, t);
-      passwordInput.value = '';
-      boot();
-    }).catch(function () {
-      setStatus('Невірний пароль.', 'error');
-    }).then(function () {
-      loginBtn.disabled = false;
-    });
+    setStatus('Перевірка пароля… це може зайняти кілька секунд.');
+    // Let the status line paint before PBKDF2 blocks the main thread.
+    window.setTimeout(function () {
+      unlockToken(password, lock).then(function (t) {
+        sessionStorage.setItem(TOKEN_KEY, t);
+        passwordInput.value = '';
+        setStatus('Пароль прийнято. Завантаження віршів…', 'ok');
+        boot();
+      }).catch(function (err) {
+        var msg = (err && err.message) ? String(err.message) : '';
+        if (/operation-specific|OperationError|decrypt/i.test(msg) || !msg) {
+          setStatus('Невірний пароль.', 'error');
+        } else {
+          setStatus('Помилка входу: ' + msg, 'error');
+        }
+      }).then(function () {
+        loginBtn.disabled = false;
+      });
+    }, 50);
   }
 
-  loginBtn.addEventListener('click', login);
-  passwordInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') login();
+  var loginForm = root.querySelector('[data-login-form]');
+  if (loginForm) {
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      login();
+    });
+  }
+  loginBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    login();
   });
 
   logoutBtn.addEventListener('click', function () {

@@ -410,9 +410,6 @@ log << "Source: #{OPTS[:source]} (#{sources.size} documents)\n"
 log << ('=' * 72) << "\n\n"
 log << "SUMMARY\n"
 log << "  poems found          #{all_poems.size}\n"
-log << "  new (not published)  #{added.size}\n"
-log << "  changed text         #{changed.size}\n"
-log << "  unchanged            #{unchanged.size}\n"
 log << "  images linked        #{all_poems.sum { |p| p.images.size }}\n"
 log << "  latin letters fixed  #{homoglyph_changes.size} distinct words\n"
 log << "  documents unreadable #{read_failures.size}\n\n"
@@ -463,12 +460,7 @@ unless homoglyph_changes.empty?
   log << "\n"
 end
 
-log << "CHANGED POEMS (text differs from what is published)  [#{changed.size}]\n"
-changed.first(60).each { |p| log << "  #{p.number} (#{p.source})\n" }
-log << "  ... #{changed.size - 60} more\n" if changed.size > 60
-log << "\nNEW POEMS  [#{added.size}]\n"
-log << '  ' << added.map(&:number).first(80).join(', ') << "\n"
-log << "  ... #{added.size - 80} more\n" if added.size > 80
+# New/changed-vs-published lists omitted: Ukrainian is the source of truth.
 
 # ---------------------------------------------------------------- author report
 # Plain-language version for the poet: numbered questions, nothing else.

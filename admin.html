@@ -10,14 +10,16 @@ lang: ukr
 
   <section class="admin-login" data-login>
     <p>Редактор українських віршів. Після збереження той самий номер з’явиться або оновиться латинкою-25. Англійською тут не перекладаємо.</p>
-    <label for="admin-password">Пароль</label>
-    <input id="admin-password" data-password type="password" autocomplete="current-password" spellcheck="false">
-    <p class="admin-help">
-      Пароль задається в GitHub Secrets репозиторію і не зберігається на сайті.
-    </p>
-    <div class="admin-actions">
-      <button type="button" data-login-btn>Увійти</button>
-    </div>
+    <form data-login-form>
+      <label for="admin-password">Пароль</label>
+      <input id="admin-password" name="password" data-password type="password" autocomplete="current-password" spellcheck="false">
+      <p class="admin-help">
+        Пароль задається в GitHub Secrets репозиторію і не зберігається на сайті.
+      </p>
+      <div class="admin-actions">
+        <button type="submit" data-login-btn>Увійти</button>
+      </div>
+    </form>
   </section>
 
   <section class="admin-shell hidden" data-shell>
