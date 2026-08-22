@@ -18,8 +18,7 @@ module LockAdmin
   module_function
 
   def write!(dest = DEST)
-    password = ENV['ADMIN_PASSWORD'].to_s
-    token = ENV['ADMIN_GITHUB_TOKEN'].to_s
+    password, token, source = credentials
     blob = if password.empty? || token.empty?
              "window.ADMIN_LOCK = null;\n"
            else
@@ -28,10 +27,28 @@ module LockAdmin
     FileUtils.mkdir_p(File.dirname(dest))
     File.write(dest, blob)
     if password.empty? || token.empty?
-      warn 'lock_admin: ADMIN_PASSWORD / ADMIN_GITHUB_TOKEN unset; /admin/ will refuse logins'
+      warn 'lock_admin: no token to seal; /admin/ will refuse logins'
     else
-      warn "lock_admin: wrote #{dest}"
+      warn "lock_admin: wrote #{dest} (#{source})"
     end
+  end
+
+  def credentials
+    secret_password = ENV['ADMIN_PASSWORD'].to_s
+    secret_token = ENV['ADMIN_GITHUB_TOKEN'].to_s
+    if !secret_password.empty? && !secret_token.empty?
+      return [secret_password, secret_token, 'production secrets']
+    end
+
+    # Local jekyll serve / build: password is always "password". Never do this
+    # in production — GitHub Actions sets JEKYLL_ENV=production.
+    if ENV['JEKYLL_ENV'] == 'production'
+      return ['', '', 'production missing secrets']
+    end
+
+    token = secret_token
+    token = ENV['GITHUB_PERSONAL_ACCESS_TOKEN'].to_s if token.empty?
+    ['password', token, 'local password']
   end
 
   def seal(password, token)

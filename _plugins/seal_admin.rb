@@ -1,6 +1,6 @@
 # Bake the admin lock file during every build. Production CI passes
-# ADMIN_PASSWORD and ADMIN_GITHUB_TOKEN as secrets; locally they may be unset
-# and /admin/ then stays locked.
+# ADMIN_PASSWORD and ADMIN_GITHUB_TOKEN as secrets. Local (non-production)
+# builds seal the token with the password "password".
 require_relative '../_tools/lock_admin'
 require 'fileutils'
 
