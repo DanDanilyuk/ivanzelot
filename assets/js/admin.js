@@ -221,6 +221,10 @@
     bodyEl.value = forEditor(parsed.body || '');
     if (deleteBtn) deleteBtn.classList.toggle('hidden', !!isNew || !path);
     renderList(searchEl.value);
+    var cur = listEl.querySelector('.is-current');
+    if (cur && cur.scrollIntoView) {
+      cur.scrollIntoView({ inline: 'center', block: 'nearest' });
+    }
   }
 
   function openPost(p) {

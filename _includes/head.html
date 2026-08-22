@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1{% if page.layout == 'admin' %}, viewport-fit=cover{% endif %}">
   {%- comment -%}
   seo builds <title> from site.title, which is fixed across languages, so we
   turn that one tag off and emit a per-language title ourselves.
