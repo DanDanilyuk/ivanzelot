@@ -4,7 +4,7 @@ layout: default
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.number }}-{{ page.edits }}</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
         {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
@@ -18,11 +18,12 @@ layout: default
   <div class="post-content e-content" itemprop="articleBody">
     {%- comment -%}
     Images sit above the poem, which is where they appear in the author's
-    documents: 263 of the 293 anchors are attached to the "@@" line that opens
-    a poem. They live in front matter rather than in the body, so they show on
-    the post page only and never in the listing pages.
+    documents. They live in front matter rather than in the body, so they show
+    on the post page only and never in the listing pages. Only the Ukrainian
+    show renders them; Latin-25 and English keep the same front matter but
+    do not display the image.
     {%- endcomment -%}
-    {%- if page.images and page.images.size > 0 -%}
+    {%- if page.categories contains 'ukr' and page.images and page.images.size > 0 -%}
     <div class="poem-images">
       {%- for img in page.images -%}
       <img src="{{ '/assets/poem_images/' | append: img | relative_url }}" alt="Ілюстрація до вірша {{ page.number }}" loading="lazy">

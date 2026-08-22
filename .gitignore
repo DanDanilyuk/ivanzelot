@@ -6,7 +6,7 @@ vendor/
 
 # Source documents for the importer. Large binaries that live on the
 # maintainer's machine; the built posts are what the site needs.
-new_poems_raw/
+poems_raw/
 
 # Working backups taken before an import. The previous posts are already
 # in git history, so these do not need tracking.

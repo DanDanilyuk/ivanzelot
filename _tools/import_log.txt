@@ -1,14 +1,14 @@
 Poem import report
-Generated: 2026-08-10   mode: WRITE
-Source: new_poems_raw (80 documents)
+Generated: 2026-08-22   mode: WRITE
+Source: latest_poems_raw (81 documents)
 ========================================================================
 
 SUMMARY
-  poems found          802
-  new (not published)  316
-  changed text         463
-  unchanged            23
-  images linked        293
+  poems found          810
+  new (not published)  323
+  changed text         465
+  unchanged            22
+  images linked        309
   latin letters fixed  36 distinct words
   documents unreadable 0
 
@@ -16,40 +16,59 @@ POEMS WHOSE NUMBER WAS MISSING AND WAS INFERRED FROM ITS NEIGHBOURS  [1]
   12PoezU-121-130.pages: a poem had no number; it sits between 124 and 122, so it must be 123
       Не зрозумів. Знову. / Кликав Бог до абсурдних речей.
 
-NOTES WITH NO NUMBER, KEPT WITH THE POEM THAT FOLLOWS  [4]
-  18PoezU181-190.pages: a note with no number was kept with poem 189
-      Не покинувши вчорашнього, / А з ним і сучасного,
+NOTES WITH NO NUMBER, KEPT WITH THE POEM THAT FOLLOWS  [3]
   42PoezU-421-430.pages: a note with no number was kept with poem 422
       (співавторство зі скромним початківцем)
   44PoezU-441-450.pages: a note with no number was kept with poem 441
       (Богдану Смоляку присвячується. / Мудрості його спостережень)
   56PoezU-561-570.pages: a note with no number was kept with poem 563
-      (Дружина поставила трійку, сам оцінюю на десятку, може хтось хоч четвірку поставить :)
+      (Дружина поставила трійку, сам оцінюю на десятку, може хтось хоч четвірки не пошкодує? :)
 
 DUPLICATE POEM NUMBERS  [1]
-  53PoezU-531-540.pages, 54PoezU-541-550.pages: number 541 is used by 2 DIFFERENT poems - kept the copy from 54PoezU-541-550.pages; the other is reproduced below and was NOT written
+  54PoezU-541-550.pages, 74PoezU741-750.pages: number 541 is used by 2 DIFFERENT poems - kept the copy from 54PoezU-541-550.pages; the other is reproduced below and was NOT written
 
-BLOCKS SPLIT ON '@' INTO CONTINUATION POSTS  [2]
-  03PoezU-31-40.pages: block 35-9 contained 1 '@' divider(s) -> 2 posts: 35-1, 35-2
+BLOCKS SPLIT ON '@' INTO CONTINUATION POSTS  [1]
   11PoezU-111-120.pages: block 111-8 contained 2 '@' divider(s) -> 3 posts: 111-1, 111-2, 111-3
+
+SEPARATORS CARRYING '?' (author uncertainty - please confirm)  [12]
+  26PoezU-261-270.pages: separator written as "@@??" (author uncertainty mark)
+  27PoezU-271-280.pages: separator written as "@@??" (author uncertainty mark)
+  27PoezU-271-280.pages: separator written as "@@??" (author uncertainty mark)
+  28PoezU-281-290.pages: separator written as "@@?" (author uncertainty mark)
+  28PoezU-281-290.pages: separator written as "@@?" (author uncertainty mark)
+  28PoezU-281-290.pages: separator written as "@@?" (author uncertainty mark)
+  28PoezU-281-290.pages: separator written as "@@?" (author uncertainty mark)
+  29PoezU-291-300.pages: separator written as "@@?" (author uncertainty mark)
+  29PoezU-291-300.pages: separator written as "@@?" (author uncertainty mark)
+  30PoezU-301-310.pages: separator written as "@@?" (author uncertainty mark)
+  33PoezU-331-340.pages: separator written as "@@??" (author uncertainty mark)
+  64PoezU641-650.pages: separator written as "@@@" (author uncertainty mark)
+
+MARKERS CARRYING A NOTE (note not imported - please confirm)  [6]
+  55PoezU-551-560.pages: marker 558 carries a note: (жінка оцінити відмовляється)
+  56PoezU-561-570.pages: marker 565 carries a note: (жінка в шоці)
+  57PoezU-571-580.pages: marker 571 carries a note: (для Роксолани)
+  73PoezU731-740.pages: marker 732 carries a note: (іронія)
+  77PoezU771-780.pages: marker 777 carries a note: (:маячня:)
+  80Poez801-810.pages: marker 804 carries a note: (суперечка навіть з жінкою)
 
 FULL TEXT OF POEMS NOT WRITTEN BECAUSE THEIR NUMBER WAS TAKEN  [1]
 (nothing is lost - assign each a free number and re-run)
-  --- number 541 from 53PoezU-531-540.pages
-      Відстійник гною в селі, а не хата.
-      Бруднішого місця, здається, й нема.
+  --- number 541 from 74PoezU741-750.pages
+      Халабуда в селі, а не хата.
+      Біднішого місця, здається, й нема.
       Гарні навколо дівчата,
       Але тут народилась Вона.
       
-      Тут і живе, приймаючи долю,
-      Звичайна на людях, шанує батьків.
-      Кохана, куди б не блукав за тобою,
-      Найбільше сюди б приходИв.
+      Тут і жилА, приймаючи долю,
+      Привітна на людях, шанувала батьків.
+      Кохана, коли особливо тужив за тобою,
+      Крадькома попри вікна твої проходИв.
       
-      Мене називають пропащим.
+      Мене називали пропащим.
       Незважаючи на односельчан,
-      Найгірше стає найкращим
-      З ароматом бузку і троянд.
+      Принижене бачив найкращим,
+      З ароматом бузку і з красою троянд.
 
 LATIN LETTERS REPLACED WITH THEIR CYRILLIC TWINS  [36]
   A (on its own)  ->  А
@@ -89,7 +108,7 @@ LATIN LETTERS REPLACED WITH THEIR CYRILLIC TWINS  [36]
   спокOю  ->  спокОю
   тEбе  ->  тЕбе
 
-CHANGED POEMS (text differs from what is published)  [463]
+CHANGED POEMS (text differs from what is published)  [465]
   10 (00PoezU-0-10.pages)
   9 (00PoezU-0-10.pages)
   8 (00PoezU-0-10.pages)
@@ -124,6 +143,7 @@ CHANGED POEMS (text differs from what is published)  [463]
   38 (03PoezU-31-40.pages)
   37 (03PoezU-31-40.pages)
   36 (03PoezU-31-40.pages)
+  35 (03PoezU-31-40.pages)
   34 (03PoezU-31-40.pages)
   33 (03PoezU-31-40.pages)
   32 (03PoezU-31-40.pages)
@@ -149,9 +169,8 @@ CHANGED POEMS (text differs from what is published)  [463]
   69 (06PoezU-61-70.pages)
   68 (06PoezU-61-70.pages)
   67 (06PoezU-61-70.pages)
-  66 (06PoezU-61-70.pages)
-  ... 403 more
+  ... 405 more
 
-NEW POEMS  [316]
-  35-1, 35-2, 111-1, 111-2, 111-3, 259, 418, 500, 499, 498, 497, 496, 495, 494, 493, 492, 491, 510, 509, 508, 507, 506, 505, 504, 503, 502, 501, 520, 519, 518, 517, 516, 515, 514, 513, 512, 511, 530, 529, 528, 527, 526, 525, 524, 523, 522, 521, 540, 539, 538, 537, 536, 535, 534, 533, 532, 531, 550, 549, 548, 547, 546, 545, 544, 543, 542, 541, 560, 559, 558, 557, 556, 555, 554, 553, 552, 551, 570, 569, 568
-  ... 236 more
+NEW POEMS  [323]
+  111-1, 111-2, 111-3, 259, 418, 500, 499, 498, 497, 496, 495, 494, 493, 492, 491, 510, 509, 508, 507, 506, 505, 504, 503, 502, 501, 520, 519, 518, 517, 516, 515, 514, 513, 512, 511, 530, 529, 528, 527, 526, 525, 524, 523, 522, 521, 540, 539, 538, 537, 536, 535, 534, 533, 532, 531, 550, 549, 548, 547, 546, 545, 544, 543, 542, 541, 560, 559, 558, 557, 556, 555, 554, 553, 552, 551, 570, 569, 568, 567, 566
+  ... 243 more

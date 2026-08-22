@@ -6,8 +6,8 @@
 # separate manual step the author runs; nothing here touches the network.
 #
 # Usage:
-#   ruby _tools/import_poems.rb --source new_poems_raw --dry-run
-#   ruby _tools/import_poems.rb --source new_poems_raw --write --latin
+#   ruby _tools/import_poems.rb --source poems_raw --dry-run
+#   ruby _tools/import_poems.rb --source poems_raw --write --latin
 #
 # Conventions recovered from the corpus:
 #   "@@"  separates individual poems
@@ -21,7 +21,7 @@ require 'fileutils'
 require_relative 'pages_reader'
 
 OPTS = {
-  source: 'new_poems_raw',
+  source: 'poems_raw',
   write: false,
   latin: false,
   date: Date.today.strftime('%Y-%m-%d'),
@@ -368,9 +368,9 @@ seen.select { |_, v| v.size > 1 }.each do |num, _|
   losers.each { |l| all_poems.delete(l) }
 end
 
-# compare against what is published now
+# Compare against the ukr posts currently on disk (before this run replaces them).
 existing = {}
-Dir['ukr/_posts_bak/*.md'].each do |f|
+Dir['ukr/_posts/*.md'].each do |f|
   body = File.read(f)
   num = body[/^number:\s*(\S+)/, 1]
   txt = body.split(/^---\s*$/, 3)[2].to_s.strip
@@ -383,8 +383,6 @@ unchanged = all_poems.select { |p| existing[p.number.to_s] == p.text }
 if OPTS[:write]
   # The import replaces the collection wholesale. Filenames carry today's date,
   # so without clearing first every poem would exist twice (old date + new).
-  # ukr/_posts_bak and latin_25/_posts_bak hold the previous contents.
-  abort 'Refusing to write: ukr/_posts_bak missing - make a backup first.' unless Dir.exist?('ukr/_posts_bak')
   FileUtils.rm_f(Dir['ukr/_posts/*.md'])
   FileUtils.rm_f(Dir['latin_25/_posts/*.md']) if OPTS[:latin]
   FileUtils.mkdir_p('ukr/_posts')
@@ -425,7 +423,7 @@ unless read_failures.empty?
   log << "\n"
 end
 
-%w[unterminated inferred reattached empty duplicate orphan_image split starred].each do |kind|
+%w[unterminated inferred reattached empty duplicate orphan_image split starred uncertain_sep odd_edits marker_note].each do |kind|
   rows = all_issues.select { |i| i[:kind] == kind }
   next if rows.empty?
   titles = {
@@ -516,9 +514,12 @@ if starred_n.positive?
 end
 
 unless splits.empty?
-  which = splits.map { |i| i[:detail][/block (\d+)/, 1] }.compact
-  r << "#{nxt.call}. Poems #{which.join(' and ')} have a single @ inside. I made each part a\n"
-  r << "   separate poem (#{which.first}-1, #{which.first}-2). Correct?\n\n"
+  lines = splits.map do |i|
+    num = i[:detail][/block (\d+)/, 1]
+    posts = i[:detail][/posts: (.+)$/, 1]
+    "Poem #{num} has @ inside. I made each part a separate poem (#{posts})"
+  end
+  r << "#{nxt.call}. #{lines.join('. ')}. Correct?\n\n"
 end
 
 # The Latin "y" is the one repair with two defensible readings: it looks like

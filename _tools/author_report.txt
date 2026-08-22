@@ -1,39 +1,35 @@
 POEMS - QUESTIONS
-10 August 2026
+22 August 2026
 
-802 poems read. Nothing is lost. I just need answers to these.
+810 poems read. Nothing is lost. I just need answers to these.
 
 1. Does a poem numbered 749 exist? I could not find one.
 
 2. Two different poems are numbered 541. I kept "Пожежник готовий зірватись".
    What number should this one have?
 
-      Відстійник гною в селі, а не хата.
-      Бруднішого місця, здається, й нема.
+      Халабуда в селі, а не хата.
+      Біднішого місця, здається, й нема.
       Гарні навколо дівчата,
       Але тут народилась Вона.
       (...)
 
 3. A poem had no number. I read it as 123. Correct?
 
-4. Poems 35 and 111 have a single @ inside. I made each part a
-   separate poem (35-1, 35-2). Correct?
+4. Poem 111 has @ inside. I made each part a separate poem (111-1, 111-2, 111-3). Correct?
 
 5. You wrote "Думкy". Should it be "Думку" or "Думки"?
 
 6. What are the right numbers for these endings?
-      447-7(9)
-      449-8(9)
-      558-Х
-      565-(Жінка в шоці, про що вірш, відразу не зрозуміла)
+      558-0 (жінка оцінити відмовляється)
+      565-0 (жінка в шоці)
       571-7 (для Роксолани)
-      680-7 (останній в трилогії)
-      731-
-      732-
+      732-5 (іронія)
       777-2 (:маячня:)
+      804-0 (суперечка навіть з жінкою)
 
-Ukrainian and Latynka-25 are complete (802 each).
+Ukrainian and Latynka-25 are complete (810 each).
 English is being redone - 3 on the site so far.
 
-Notes: 4 notes had no number; kept with poems 189, 422, 441, 563.
-       13 dividers were written @@?; treated as normal.
+Notes: 3 notes had no number; kept with poems 422, 441, 563.
+       12 dividers were written @@?; treated as normal.

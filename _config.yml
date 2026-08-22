@@ -40,7 +40,7 @@ kramdown:
   hard_wrap: true
 exclude:
   - CLAUDE.md
-  - new_poems_raw # 131MB of source documents; never publish
+  - poems_raw # source documents; never publish
 
 # Exclude from processing.
 # The following items will not be processed, by default.

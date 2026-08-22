@@ -7,7 +7,7 @@
   turn that one tag off and emit a per-language title ourselves.
   {%- endcomment -%}
   {%- seo title=false -%}
-  <title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ t.site_title | default: site.title | escape }}</title>
+  <title>{% if page.number %}{{ page.number }}-{{ page.edits }} | {% elsif page.title %}{{ page.title | escape }} | {% endif %}{{ t.site_title | default: site.title | escape }}</title>
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
