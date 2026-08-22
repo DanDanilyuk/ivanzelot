@@ -83,7 +83,7 @@ Front matter that drives chrome, set per listing page:
 
 - `weight` - nav order; `_includes/header.html` sorts `site.pages` by weight and links only pages that have a `title`.
 - `heading` - the `<h2>` subtitle under the site title (defaults to "Poems").
-- `permalink` - listings use flat pretty paths (`/poems-english/`, `/poems-ukrainian/`, `/poems-latin-25/`, `/aphorisms/`). Individual posts inherit the global `permalink: pretty` plus their folder category, giving `/ukr/poems/2024/09/29/1-ukr/`.
+- `permalink` - listings use `/poems-ukrainian/`, `/poems-latin-25/`, `/poems-english/`. Individual poems use `/poems-ukrainian/:number/` (and the same for latin-25 and english).
 
 `_layouts/default.html` picks the `<html lang>` from the page path (`ukr` → uk, `latin_25` → latin, `eng` → en, else uk).
 

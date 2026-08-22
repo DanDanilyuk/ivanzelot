@@ -12,6 +12,8 @@ Jekyll::Hooks.register :site, :post_read do |site|
     posts << latin_doc(site, src)
   end
 
+  posts.each { |doc| assign_poem_permalink(doc) }
+
   posts.sort!
   site.instance_variable_set(:@categories, nil)
   site.instance_variable_set(:@tags, nil)
@@ -37,5 +39,24 @@ def latin_doc(site, src)
   doc.send(:merge_data!, { 'categories' => ['poems'] }, source: 'latin derive')
   doc.send(:populate_categories)
   doc.send(:populate_title)
+  assign_poem_permalink(doc)
   doc
+end
+
+def assign_poem_permalink(doc)
+  number = doc.data['number']
+  return if number.to_s.empty?
+
+  cats = categories(doc)
+  base = if cats.include?('ukr')
+           '/poems-ukrainian'
+         elsif cats.include?('latin_25')
+           '/poems-latin-25'
+         elsif cats.include?('eng')
+           '/poems-english'
+         end
+  return unless base
+
+  doc.data['permalink'] = "#{base}/#{number}/"
+  doc.instance_variable_set(:@url, nil)
 end

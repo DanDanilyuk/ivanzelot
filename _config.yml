@@ -29,6 +29,21 @@ url: 'https://ivanzelot.com' # the base hostname & protocol for your site, e.g. 
 # github_username:  jekyll
 permalink: pretty
 
+# Individual poems: /poems-ukrainian/809/ (and latin-25 / english).
+defaults:
+  - scope:
+      path: ukr/_posts
+    values:
+      permalink: /poems-ukrainian/:number/
+  - scope:
+      path: latin_25/_posts
+    values:
+      permalink: /poems-latin-25/:number/
+  - scope:
+      path: eng/_posts
+    values:
+      permalink: /poems-english/:number/
+
 # Build settings
 theme: minima
 plugins:

@@ -45,6 +45,7 @@
 
   var matches = items;
   var page = 0;
+  var applyingUrl = false;
 
   // English: one|many. Ukrainian: one|few|many, by the usual 1 / 2-4 / rest rule.
   function unit(n) {
@@ -76,6 +77,15 @@
     return out;
   }
 
+  function hrefFor(pageIndex) {
+    var params = new URLSearchParams();
+    var q = input.value.trim();
+    if (q) params.set('q', q);
+    if (pageIndex > 0) params.set('page', String(pageIndex + 1));
+    var qs = params.toString();
+    return location.pathname + (qs ? '?' + qs : '');
+  }
+
   function renderNumbers(current, total) {
     numbers.textContent = '';
     pageList(current, total).forEach(function (entry) {
@@ -87,21 +97,25 @@
         numbers.appendChild(gap);
         return;
       }
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'poem-pager__num';
-      btn.textContent = entry;
       if (entry === current) {
-        btn.classList.add('is-current');
-        btn.setAttribute('aria-current', 'page');
-        btn.disabled = true;
-      } else {
-        btn.setAttribute('aria-label', pageLabel + ' ' + entry);
-        btn.addEventListener('click', function () {
-          turn(entry - 1);
-        });
+        var here = document.createElement('span');
+        here.className = 'poem-pager__num is-current';
+        here.setAttribute('aria-current', 'page');
+        here.textContent = entry;
+        numbers.appendChild(here);
+        return;
       }
-      numbers.appendChild(btn);
+      var link = document.createElement('a');
+      link.className = 'poem-pager__num';
+      link.href = hrefFor(entry - 1);
+      link.textContent = entry;
+      link.setAttribute('aria-label', pageLabel + ' ' + entry);
+      link.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        e.preventDefault();
+        turn(entry - 1);
+      });
+      numbers.appendChild(link);
     });
   }
 
@@ -140,21 +154,64 @@
     next.disabled = page >= pages - 1;
   }
 
-  function filter() {
+  function applyFilter() {
     var query = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
     matches = query
       ? items.filter(function (item) {
           return item.text.indexOf(query) !== -1 || item.number.indexOf(query) === 0;
         })
       : items;
+  }
+
+  function filter() {
+    applyFilter();
     page = 0;
     render();
+    writeUrl(false);
   }
 
   function turn(to) {
     page = to;
     render();
+    writeUrl(true);
     root.scrollIntoView({ block: 'start' });
+  }
+
+  function readUrl() {
+    var params = new URLSearchParams(location.search);
+    var q = params.get('q') || '';
+    var raw = parseInt(params.get('page'), 10);
+    return {
+      query: q,
+      page: !raw || raw < 1 ? 0 : raw - 1
+    };
+  }
+
+  function writeUrl(push) {
+    if (applyingUrl) return;
+    var params = new URLSearchParams();
+    var q = input.value.trim();
+    if (q) params.set('q', q);
+    if (page > 0) params.set('page', String(page + 1));
+    var qs = params.toString();
+    var url = location.pathname + (qs ? '?' + qs : '') + location.hash;
+    var current = location.pathname + location.search + location.hash;
+    if (url === current) return;
+    var state = { poemIndex: true, page: page, q: q };
+    if (push) history.pushState(state, '', url);
+    else history.replaceState(state, '', url);
+  }
+
+  function applyFromUrl() {
+    applyingUrl = true;
+    var u = readUrl();
+    input.value = u.query;
+    applyFilter();
+    var pages = Math.max(1, Math.ceil(matches.length / PER_PAGE));
+    page = Math.min(Math.max(u.page, 0), pages - 1);
+    render();
+    applyingUrl = false;
+    writeUrl(false);
   }
 
   var pending;
@@ -177,10 +234,14 @@
     turn(page + 1);
   });
 
+  window.addEventListener('popstate', function () {
+    applyFromUrl();
+  });
+
   // Nothing to search or page through: leave the controls hidden rather than
   // showing an empty search box and a "no matches" message.
   if (items.length === 0) return;
 
   search.hidden = false;
-  render();
+  applyFromUrl();
 })();

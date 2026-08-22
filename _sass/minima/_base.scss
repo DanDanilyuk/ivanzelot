@@ -408,8 +408,10 @@ table {
   font-size: inherit;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
+  text-align: center;
+  text-decoration: none;
 
-  &:hover:not(:disabled) {
+  &:hover:not(.is-current) {
     background-color: $grey-color-light;
   }
 

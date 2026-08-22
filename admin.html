@@ -6,39 +6,46 @@ lang: ukr
 ---
 
 <div class="admin-app" data-admin data-repo="DanDanilyuk/ivanzelot" data-branch="main">
-  <p class="admin-status hidden" data-status></p>
+  <p class="admin-status hidden" data-status role="status"></p>
 
   <section class="admin-login" data-login>
-    <p>Редактор українських віршів. Після збереження той самий номер з’явиться або оновиться латинкою-25. Англійською тут не перекладаємо.</p>
-    <form data-login-form action="javascript:void(0)" method="post" autocomplete="on" onsubmit="event.preventDefault(); if (window.adminLogin) { window.adminLogin(); } return false;">
-      <label class="hidden" for="admin-username">Користувач</label>
-      <input id="admin-username" name="username" type="text" value="editor" autocomplete="username" class="hidden" tabindex="-1">
-      <label for="admin-password">Пароль</label>
-      <input id="admin-password" name="password" data-password type="password" autocomplete="current-password" spellcheck="false">
-      <p class="admin-help">
-        {%- if jekyll.environment == 'production' -%}
-        Пароль задається в GitHub Secrets репозиторію і не зберігається на сайті.
-        {%- else -%}
-        Локально пароль: <code>password</code>
-        {%- endif -%}
-      </p>
-      <div class="admin-actions">
+    <div class="admin-card">
+      <h1>Редактор</h1>
+      <p class="admin-lead">Українською. Латинка-25 оновиться сама.</p>
+      <form data-login-form action="javascript:void(0)" method="post" autocomplete="on" onsubmit="event.preventDefault(); if (window.adminLogin) { window.adminLogin(); } return false;">
+        <label class="hidden" for="admin-username">Користувач</label>
+        <input id="admin-username" name="username" type="text" value="editor" autocomplete="username" class="hidden" tabindex="-1">
+        <label for="admin-password">Пароль</label>
+        <input id="admin-password" name="password" data-password type="password" autocomplete="current-password" spellcheck="false">
+        <p class="admin-help">
+          {%- if jekyll.environment == 'production' -%}
+          Пароль із менеджера паролів.
+          {%- else -%}
+          Локально: <code>password</code>
+          {%- endif -%}
+        </p>
         <button type="submit" data-login-btn>Увійти</button>
-      </div>
-    </form>
+      </form>
+    </div>
   </section>
 
   <section class="admin-shell hidden" data-shell>
-    <aside>
-      <input class="admin-search" data-search type="search" placeholder="Номер…" autocomplete="off">
-      <div class="admin-actions">
-        <button type="button" data-new>Новий вірш</button>
-        <button type="button" class="secondary" data-logout>Вийти</button>
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__bar">
+        <input class="admin-search" data-search type="search" placeholder="Номер…" autocomplete="off">
+        <button type="button" class="admin-btn admin-btn--quiet" data-new title="Новий вірш">Новий</button>
       </div>
       <div class="admin-list" data-list></div>
     </aside>
     <div class="admin-editor">
-      <p class="admin-help" data-path></p>
+      <header class="admin-editor__bar">
+        <p class="admin-path" data-path></p>
+        <div class="admin-editor__actions">
+          <button type="button" class="admin-btn" data-save>Зберегти</button>
+          <button type="button" class="admin-btn admin-btn--danger hidden" data-delete>Видалити</button>
+          <button type="button" class="admin-btn admin-btn--quiet" data-logout>Вийти</button>
+        </div>
+      </header>
       <div class="admin-row">
         <div>
           <label for="admin-number">Номер</label>
@@ -51,10 +58,6 @@ lang: ukr
       </div>
       <label for="admin-body">Текст українською</label>
       <textarea id="admin-body" data-body spellcheck="true"></textarea>
-      <div class="admin-actions">
-        <button type="button" data-save>Зберегти українською + латинкою-25</button>
-        <button type="button" class="danger hidden" data-delete>Видалити</button>
-      </div>
     </div>
   </section>
 </div>
