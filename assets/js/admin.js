@@ -26,6 +26,7 @@
   var editsEl = root.querySelector('[data-edits]');
   var bodyEl = root.querySelector('[data-body]');
   var saveBtn = root.querySelector('[data-save]');
+  var deleteBtn = root.querySelector('[data-delete]');
   var newBtn = root.querySelector('[data-new]');
   var logoutBtn = root.querySelector('[data-logout]');
   var loginBtn = root.querySelector('[data-login-btn]');
@@ -218,6 +219,7 @@
     numberEl.readOnly = !isNew;
     editsEl.value = parsed.edits;
     bodyEl.value = forEditor(parsed.body || '');
+    if (deleteBtn) deleteBtn.classList.toggle('hidden', !!isNew || !path);
     renderList(searchEl.value);
   }
 
@@ -241,7 +243,10 @@
           body: {
             base_tree: commit.tree.sha,
             tree: files.map(function (f) {
-              return { path: f.path, mode: '100644', type: 'blob', content: f.content };
+              if (f.delete) {
+          return { path: f.path, mode: '100644', type: 'blob', sha: null };
+        }
+        return { path: f.path, mode: '100644', type: 'blob', content: f.content };
             })
           }
         }).then(function (tree) {
@@ -281,6 +286,13 @@
       return;
     }
 
+    var existing = posts.find(function (p) { return p.number === number; });
+    var editingSame = current && !current.isNew && existing && existing.path === current.path;
+    if (existing && !editingSame) {
+      setStatus('Вірш ' + number + ' уже є. Відкрийте його зі списку, змініть або видаліть. Новий з тим самим номером не створюється.', 'error');
+      return;
+    }
+
     var parsed = {
       number: number,
       edits: edits,
@@ -289,16 +301,13 @@
     var ukrPath = (current && current.path && !current.isNew)
       ? current.path
       : 'ukr/_posts/' + todayStamp() + '-' + number + '-ukr.md';
-    var existing = posts.find(function (p) { return p.number === number; });
-    if (current && current.isNew && existing) {
-      ukrPath = existing.path;
-    }
     var latPath = latinPathFromUkr(ukrPath);
     var ukrFile = serialize('ukr', parsed, body);
     var latFile = serialize('latin_25', parsed, toLatin(body));
 
     saving = true;
     saveBtn.disabled = true;
+    if (deleteBtn) deleteBtn.disabled = true;
     setStatus('Збереження ' + number + '…');
 
     commitFiles('Update poem ' + number, [
@@ -318,13 +327,43 @@
     }).then(function () {
       saving = false;
       saveBtn.disabled = false;
+      if (deleteBtn) deleteBtn.disabled = false;
     });
   }
 
   function newPoem() {
     fillForm({ number: '', edits: '1', images: [], body: '' }, '', true);
     numberEl.focus();
-    setStatus('Новий вірш. Після збереження з’явиться українською і латинкою-25.');
+    setStatus('Новий вірш. Номер не може збігатися з уже існуючим.');
+  }
+
+  function deleteCurrent() {
+    if (saving || loggingIn) return;
+    if (!current || current.isNew || !current.path) {
+      setStatus('Немає збереженого вірша, щоб видалити.', 'error');
+      return;
+    }
+    var number = current.number;
+    if (!window.confirm('Видалити вірш ' + number + ' українською і латинкою-25?')) return;
+
+    saving = true;
+    saveBtn.disabled = true;
+    if (deleteBtn) deleteBtn.disabled = true;
+    setStatus('Видалення ' + number + '…');
+    commitFiles('Delete poem ' + number, [
+      { path: current.path, delete: true },
+      { path: latinPathFromUkr(current.path), delete: true }
+    ]).then(function () {
+      posts = posts.filter(function (p) { return p.path !== current.path; });
+      fillForm({ number: '', edits: '1', images: [], body: '' }, '', true);
+      setStatus('Вірш ' + number + ' видалено. Сайт збереться за хвилину-дві.', 'ok');
+    }).catch(function (err) {
+      setStatus(err.message, 'error');
+    }).then(function () {
+      saving = false;
+      saveBtn.disabled = false;
+      if (deleteBtn) deleteBtn.disabled = false;
+    });
   }
 
   function boot() {
@@ -431,6 +470,7 @@
 
   searchEl.addEventListener('input', function () { renderList(searchEl.value); });
   saveBtn.addEventListener('click', save);
+  if (deleteBtn) deleteBtn.addEventListener('click', deleteCurrent);
   newBtn.addEventListener('click', newPoem);
 
   if (token()) boot();

@@ -90,6 +90,10 @@
   background: #828282;
 }
 
+.admin-actions button.danger {
+  background: #b42318;
+}
+
 .admin-shell {
   display: grid;
   grid-template-columns: 16rem 1fr;

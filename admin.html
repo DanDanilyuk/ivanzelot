@@ -16,7 +16,11 @@ lang: ukr
       <label for="admin-password">Пароль</label>
       <input id="admin-password" name="password" data-password type="password" autocomplete="current-password" spellcheck="false">
       <p class="admin-help">
+        {%- if jekyll.environment == 'production' -%}
         Пароль задається в GitHub Secrets репозиторію і не зберігається на сайті.
+        {%- else -%}
+        Локально пароль: <code>password</code>
+        {%- endif -%}
       </p>
       <div class="admin-actions">
         <button type="submit" data-login-btn>Увійти</button>
@@ -49,6 +53,7 @@ lang: ukr
       <textarea id="admin-body" data-body spellcheck="true"></textarea>
       <div class="admin-actions">
         <button type="button" data-save>Зберегти українською + латинкою-25</button>
+        <button type="button" class="danger hidden" data-delete>Видалити</button>
       </div>
     </div>
   </section>
