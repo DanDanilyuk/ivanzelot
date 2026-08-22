@@ -15,7 +15,7 @@
   var branch = root.getAttribute('data-branch') || 'main';
   var TOKEN_KEY = 'ivanzelot-github-token';
 
-  var login = root.querySelector('[data-login]');
+  var loginPanel = root.querySelector('[data-login]');
   var shell = root.querySelector('[data-shell]');
   var passwordInput = root.querySelector('[data-password]');
   var statusEl = root.querySelector('[data-status]');
@@ -341,14 +341,14 @@
         })
         .map(function (t) { return { path: t.path, number: numberFromPath(t.path) }; })
         .sort(function (a, b) { return parseFloat(b.number) - parseFloat(a.number); });
-      login.classList.add('hidden');
+      loginPanel.classList.add('hidden');
       shell.classList.remove('hidden');
       renderList('');
       setStatus('Віршів: ' + posts.length + '. Англійська в редакторі не змінюється.');
     }).catch(function (err) {
       setStatus('Не вдалося увійти: ' + err.message, 'error');
       sessionStorage.removeItem(TOKEN_KEY);
-      login.classList.remove('hidden');
+      loginPanel.classList.remove('hidden');
       shell.classList.add('hidden');
     });
   }
@@ -425,7 +425,7 @@
     current = null;
     posts = [];
     shell.classList.add('hidden');
-    login.classList.remove('hidden');
+    loginPanel.classList.remove('hidden');
     setStatus('Вихід.');
   });
 
