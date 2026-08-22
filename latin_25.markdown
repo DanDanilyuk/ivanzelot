@@ -2,7 +2,7 @@
 lang: latin_25
 heading: Poezija
 layout: default
-weight: 3
+weight: 2
 title: Латинкою-25
 permalink: /poems-latin-25/
 categories: latin_25
