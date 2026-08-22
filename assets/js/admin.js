@@ -6,7 +6,10 @@
   'use strict';
 
   var root = document.querySelector('[data-admin]');
-  if (!root) return;
+  if (!root) {
+    document.body && document.body.insertAdjacentHTML('afterbegin', '<p>Admin markup missing.</p>');
+    return;
+  }
 
   var repo = root.getAttribute('data-repo');
   var branch = root.getAttribute('data-branch') || 'main';
@@ -31,6 +34,7 @@
   var current = null;
   var latinMap = null;
   var saving = false;
+  var loggingIn = false;
 
   function token() {
     return sessionStorage.getItem(TOKEN_KEY) || '';
@@ -350,6 +354,7 @@
   }
 
   function login() {
+    if (loggingIn) return;
     var password = passwordInput.value;
     var lock = window.ADMIN_LOCK;
     if (!lock) {
@@ -364,6 +369,7 @@
       setStatus('Потрібен HTTPS і сучасний браузер (Web Crypto).', 'error');
       return;
     }
+    loggingIn = true;
     loginBtn.disabled = true;
     setStatus('Перевірка пароля… це може зайняти кілька секунд.');
     // Let the status line paint before PBKDF2 blocks the main thread.
@@ -381,18 +387,34 @@
           setStatus('Помилка входу: ' + msg, 'error');
         }
       }).then(function () {
+        loggingIn = false;
         loginBtn.disabled = false;
       });
     }, 50);
   }
 
+  window.adminLogin = login;
+
   var loginForm = root.querySelector('[data-login-form]');
   if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
       e.preventDefault();
+      e.stopPropagation();
       login();
     });
+    // Password managers often call HTMLFormElement.submit(), which does not
+    // fire a submit event and would reload /admin/.
+    loginForm.submit = function () {
+      login();
+    };
   }
+  document.addEventListener('submit', function (e) {
+    if (e.target && e.target.getAttribute && e.target.hasAttribute('data-login-form')) {
+      e.preventDefault();
+      e.stopPropagation();
+      login();
+    }
+  }, true);
   loginBtn.addEventListener('click', function (e) {
     e.preventDefault();
     login();

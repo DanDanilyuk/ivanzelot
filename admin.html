@@ -10,7 +10,9 @@ lang: ukr
 
   <section class="admin-login" data-login>
     <p>Редактор українських віршів. Після збереження той самий номер з’явиться або оновиться латинкою-25. Англійською тут не перекладаємо.</p>
-    <form data-login-form>
+    <form data-login-form action="javascript:void(0)" method="post" autocomplete="on" onsubmit="event.preventDefault(); if (window.adminLogin) { window.adminLogin(); } return false;">
+      <label class="hidden" for="admin-username">Користувач</label>
+      <input id="admin-username" name="username" type="text" value="editor" autocomplete="username" class="hidden" tabindex="-1">
       <label for="admin-password">Пароль</label>
       <input id="admin-password" name="password" data-password type="password" autocomplete="current-password" spellcheck="false">
       <p class="admin-help">
@@ -51,6 +53,3 @@ lang: ukr
     </div>
   </section>
 </div>
-
-<script src="{{ '/assets/js/admin-lock.js' | relative_url }}"></script>
-<script src="{{ '/assets/js/admin.js' | relative_url }}"></script>
