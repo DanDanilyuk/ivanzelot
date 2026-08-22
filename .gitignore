@@ -8,6 +8,10 @@ vendor/
 # maintainer's machine; the built posts are what the site needs.
 poems_raw/
 
+# Built at jekyll-build from ADMIN_PASSWORD + ADMIN_GITHUB_TOKEN secrets.
+# Ciphertext only; still must not be committed (salt is per-build).
+assets/js/admin-lock.js
+
 # Working backups taken before an import. The previous posts are already
 # in git history, so these do not need tracking.
 */_posts_bak/

@@ -26,15 +26,18 @@ Ruby is pinned by `.ruby-version` (4.0.6); gems come from the repo `Gemfile` (Je
 
 ## Content pipeline
 
-Poems are **generated, not hand-authored**. Source of truth is `poems_raw/*.pages` (untracked):
+**Ukrainian posts (`ukr/_posts`) are the source of truth.** Latin-25 is derived from them; do not hand-edit `latin_25/_posts`. English is a separate later step and is not produced by the editor or the importer.
 
-```bash
-ruby _tools/import_poems.rb --source poems_raw --write --latin
-```
+The author edits Ukrainian at `/admin/`. That page is static GitHub Pages (no extra server). A site password unwraps a GitHub token that was encrypted at build time. Use repository **Secrets**, never **Variables** (variables are visible on a public repo):
 
-That reads the Pages documents, writes `ukr/_posts/` and `latin_25/_posts/` (Latin-25 via `_tools/replacement.rb`), and extracts images into `assets/poem_images/`. It does not touch English or AWS.
+- `ADMIN_PASSWORD` — what the author types
+- `ADMIN_GITHUB_TOKEN` — fine-grained PAT with Contents: Read and write on this repo
 
-Filename convention: `YYYY-MM-DD-<number>-<lang>.md`. Editing a poem by hand works but will be clobbered by the next import; prefer fixing the source Pages file.
+`_plugins/seal_admin.rb` writes `assets/js/admin-lock.js` (gitignored ciphertext) during `jekyll build`. Save writes the Ukrainian file and creates or updates the matching Latin-25 file. `_plugins/derive_latin_25.rb` also rebuilds every Latin-25 post from Ukrainian at build, so the published Latin-25 listing cannot drift. English is not written.
+
+A bulk import from `poems_raw/*.pages` still exists (`ruby _tools/import_poems.rb --source poems_raw --write --latin`) but it overwrites Ukrainian posts. Do not run it after the author has started editing in `/admin/`.
+
+Filename convention: `YYYY-MM-DD-<number>-<lang>.md`.
 
 ## Post and page conventions
 

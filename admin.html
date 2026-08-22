@@ -1,0 +1,54 @@
+---
+layout: admin
+permalink: /admin/
+sitemap: false
+lang: ukr
+---
+
+<div class="admin-app" data-admin data-repo="DanDanilyuk/ivanzelot" data-branch="main">
+  <p class="admin-status hidden" data-status></p>
+
+  <section class="admin-login" data-login>
+    <p>Редактор українських віршів. Після збереження той самий номер з’явиться або оновиться латинкою-25. Англійською тут не перекладаємо.</p>
+    <label for="admin-password">Пароль</label>
+    <input id="admin-password" data-password type="password" autocomplete="current-password" spellcheck="false">
+    <p class="admin-help">
+      Пароль задається в GitHub Secrets репозиторію і не зберігається на сайті.
+    </p>
+    <div class="admin-actions">
+      <button type="button" data-login-btn>Увійти</button>
+    </div>
+  </section>
+
+  <section class="admin-shell hidden" data-shell>
+    <aside>
+      <input class="admin-search" data-search type="search" placeholder="Номер…" autocomplete="off">
+      <div class="admin-actions">
+        <button type="button" data-new>Новий вірш</button>
+        <button type="button" class="secondary" data-logout>Вийти</button>
+      </div>
+      <div class="admin-list" data-list></div>
+    </aside>
+    <div class="admin-editor">
+      <p class="admin-help" data-path></p>
+      <div class="admin-row">
+        <div>
+          <label for="admin-number">Номер</label>
+          <input id="admin-number" data-number>
+        </div>
+        <div>
+          <label for="admin-edits">Правки</label>
+          <input id="admin-edits" data-edits>
+        </div>
+      </div>
+      <label for="admin-body">Текст українською</label>
+      <textarea id="admin-body" data-body spellcheck="true"></textarea>
+      <div class="admin-actions">
+        <button type="button" data-save>Зберегти українською + латинкою-25</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="{{ '/assets/js/admin-lock.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/admin.js' | relative_url }}"></script>

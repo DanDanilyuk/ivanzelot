@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="uk">
+{%- assign t = site.data.i18n.ukr -%}
+{%- include head.html -%}
+<body class="admin-body">
+  <header class="site-header" role="banner">
+    <div class="wrapper" style="text-align: center;">
+      <a class="site-title" rel="author" href="{{ "/" | relative_url }}">{{ t.site_title | default: site.title | escape }}</a>
+      <h2>Редактор віршів</h2>
+    </div>
+  </header>
+  <main class="page-content" aria-label="Editor">
+    <div class="wrapper admin-wrap">
+      {{ content }}
+    </div>
+  </main>
+</body>
+</html>

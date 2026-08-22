@@ -8,7 +8,9 @@
   {%- endcomment -%}
   {%- seo title=false -%}
   <title>{% if page.number %}{{ page.number }}-{{ page.edits }} | {% elsif page.title %}{{ page.title | escape }} | {% endif %}{{ t.site_title | default: site.title | escape }}</title>
+  {% if page.sitemap == false %}<meta name="robots" content="noindex, nofollow">{% endif %}
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+  {% if page.layout == 'admin' %}<link rel="stylesheet" href="{{ "/assets/admin.css" | relative_url }}">{% endif %}
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}
