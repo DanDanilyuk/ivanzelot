@@ -11,7 +11,7 @@ lang: ukr
   <section class="admin-login" data-login>
     <div class="admin-card">
       <h1>Редактор</h1>
-      <p class="admin-lead">Українською. Латинка-25 оновиться сама.</p>
+      <p class="admin-lead">Українською та англійською. Латинка-25 оновиться сама.</p>
       <form data-login-form action="javascript:void(0)" method="post" autocomplete="on" onsubmit="event.preventDefault(); if (window.adminLogin) { window.adminLogin(); } return false;">
         <label class="hidden" for="admin-username">Користувач</label>
         <input id="admin-username" name="username" type="text" value="editor" autocomplete="username" class="hidden" tabindex="-1">
@@ -56,8 +56,27 @@ lang: ukr
           <input id="admin-edits" data-edits>
         </div>
       </div>
-      <label for="admin-body">Текст українською</label>
-      <textarea id="admin-body" data-body spellcheck="true"></textarea>
+      <div class="admin-field">
+        <label for="admin-body">Текст українською</label>
+        <textarea id="admin-body" data-body lang="uk" spellcheck="true"></textarea>
+      </div>
+      <div class="admin-field">
+        <label for="admin-body-eng">Текст англійською</label>
+        <textarea id="admin-body-eng" data-body-eng lang="en" spellcheck="true"></textarea>
+      </div>
+      <div class="admin-field admin-image" data-image-block>
+        <p class="admin-image__label" id="admin-image-label">Зображення (необов’язково, лише одне)</p>
+        <div class="admin-image__preview hidden" data-image-preview>
+          <img data-image-img alt="">
+          <p class="admin-image__name" data-image-name></p>
+        </div>
+        <p class="admin-image__empty" data-image-empty>Немає зображення.</p>
+        <div class="admin-image__actions">
+          <input id="admin-image-file" class="admin-file-input" data-image-file type="file" accept="image/png,image/jpeg,image/gif,image/webp,image/heic,image/heif,.png,.jpg,.jpeg,.gif,.webp,.heic,.heif">
+          <label for="admin-image-file" class="admin-btn admin-btn--quiet" data-image-pick>Додати зображення</label>
+          <button type="button" class="admin-btn admin-btn--danger hidden" data-image-remove>Видалити зображення</button>
+        </div>
+      </div>
     </div>
   </section>
 </div>

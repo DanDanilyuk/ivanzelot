@@ -245,6 +245,8 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
+  overflow: auto;
   padding: 1rem 1.25rem 1.25rem;
 }
 
@@ -311,6 +313,14 @@
   background: #96190f;
 }
 
+label.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: auto;
+}
+
 .admin-row {
   display: grid;
   grid-template-columns: 8.5rem 5.5rem;
@@ -327,7 +337,18 @@
   color: var(--admin-grey-dark);
 }
 
-.admin-editor input,
+.admin-editor label.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--admin-text);
+}
+
+.admin-editor input:not([type="file"]),
 .admin-editor textarea {
   width: 100%;
   box-sizing: border-box;
@@ -338,20 +359,98 @@
   font: inherit;
 }
 
-.admin-editor input:focus,
+.admin-editor input:not([type="file"]):focus,
 .admin-editor textarea:focus {
   outline: 2px solid var(--admin-brand);
   outline-offset: 1px;
   border-color: var(--admin-brand);
 }
 
+.admin-field {
+  margin-bottom: 0.85rem;
+}
+
 .admin-editor textarea {
-  flex: 1;
-  min-height: 22rem;
+  min-height: 14rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 16px;
   line-height: 1.55;
   resize: vertical;
+}
+
+.admin-image {
+  position: relative;
+}
+
+.admin-image__label {
+  display: block;
+  margin: 0 0 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--admin-grey-dark);
+}
+
+.admin-image__preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.2rem 0 0.6rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--admin-grey-light);
+  border-radius: 6px;
+  background: var(--admin-bg);
+}
+
+.admin-image__preview img {
+  display: block;
+  max-width: 7.5rem;
+  max-height: 7.5rem;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.admin-image__preview img.is-broken {
+  display: none;
+}
+
+.admin-image__name {
+  margin: 0;
+  color: var(--admin-grey-dark);
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+.admin-image__empty {
+  margin: 0.15rem 0 0.55rem;
+  color: var(--admin-grey);
+  font-size: 0.85rem;
+}
+
+.admin-image__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.admin-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.admin-image__actions .admin-btn,
+.admin-image__actions label.admin-btn {
+  margin: 0;
 }
 
 .hidden {
@@ -443,6 +542,11 @@
   }
 
   .admin-editor textarea {
-    min-height: 16rem;
+    min-height: 11rem;
+  }
+
+  .admin-image__actions .admin-btn,
+  .admin-image__actions label.admin-btn {
+    flex: 1 1 0;
   }
 }

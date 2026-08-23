@@ -1,17 +1,13 @@
 Poem import report
-Generated: 2026-08-22   mode: DRY RUN (nothing written)
+Generated: 2026-08-22   mode: WRITE
 Source: poems_raw (81 documents)
 ========================================================================
 
 SUMMARY
-  poems found          810
-  images linked        309
+  poems found          811
+  images linked        310
   latin letters fixed  36 distinct words
   documents unreadable 0
-
-POEMS WHOSE NUMBER WAS MISSING AND WAS INFERRED FROM ITS NEIGHBOURS  [1]
-  12PoezU-121-130.pages: a poem had no number; it sits between 124 and 122, so it must be 123
-      Не зрозумів. Знову. / Кликав Бог до абсурдних речей.
 
 NOTES WITH NO NUMBER, KEPT WITH THE POEM THAT FOLLOWS  [3]
   42PoezU-421-430.pages: a note with no number was kept with poem 422
@@ -20,9 +16,6 @@ NOTES WITH NO NUMBER, KEPT WITH THE POEM THAT FOLLOWS  [3]
       (Богдану Смоляку присвячується. / Мудрості його спостережень)
   56PoezU-561-570.pages: a note with no number was kept with poem 563
       (Дружина поставила трійку, сам оцінюю на десятку, може хтось хоч четвірки не пошкодує? :)
-
-DUPLICATE POEM NUMBERS  [1]
-  54PoezU-541-550.pages, 74PoezU741-750.pages: number 541 is used by 2 DIFFERENT poems - kept the copy from 54PoezU-541-550.pages; the other is reproduced below and was NOT written
 
 BLOCKS SPLIT ON '@' INTO CONTINUATION POSTS  [1]
   11PoezU-111-120.pages: block 111-8 contained 2 '@' divider(s) -> 3 posts: 111-1, 111-2, 111-3
@@ -48,24 +41,6 @@ MARKERS CARRYING A NOTE (note not imported - please confirm)  [6]
   73PoezU731-740.pages: marker 732 carries a note: (іронія)
   77PoezU771-780.pages: marker 777 carries a note: (:маячня:)
   80Poez801-810.pages: marker 804 carries a note: (суперечка навіть з жінкою)
-
-FULL TEXT OF POEMS NOT WRITTEN BECAUSE THEIR NUMBER WAS TAKEN  [1]
-(nothing is lost - assign each a free number and re-run)
-  --- number 541 from 74PoezU741-750.pages
-      Халабуда в селі, а не хата.
-      Біднішого місця, здається, й нема.
-      Гарні навколо дівчата,
-      Але тут народилась Вона.
-      
-      Тут і жилА, приймаючи долю,
-      Привітна на людях, шанувала батьків.
-      Кохана, коли особливо тужив за тобою,
-      Крадькома попри вікна твої проходИв.
-      
-      Мене називали пропащим.
-      Незважаючи на односельчан,
-      Принижене бачив найкращим,
-      З ароматом бузку і з красою троянд.
 
 LATIN LETTERS REPLACED WITH THEIR CYRILLIC TWINS  [36]
   A (on its own)  ->  А

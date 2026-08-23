@@ -20,14 +20,12 @@ layout: default
     Images sit above the poem, which is where they appear in the author's
     documents. They live in front matter rather than in the body, so they show
     on the post page only and never in the listing pages. Only the Ukrainian
-    show renders them; Latin-25 and English keep the same front matter but
-    do not display the image.
+    show renders them; a poem has at most one image.
     {%- endcomment -%}
-    {%- if page.categories contains 'ukr' and page.images and page.images.size > 0 -%}
+    {%- assign poem_image = page.images | first -%}
+    {%- if page.categories contains 'ukr' and poem_image -%}
     <div class="poem-images">
-      {%- for img in page.images -%}
-      <img src="{{ '/assets/poem_images/' | append: img | relative_url }}" alt="Ілюстрація до вірша {{ page.number }}" loading="lazy">
-      {%- endfor -%}
+      <img src="{{ '/assets/poem_images/' | append: poem_image | relative_url }}" alt="Ілюстрація до вірша {{ page.number }}" loading="lazy">
     </div>
     {%- endif -%}
 
