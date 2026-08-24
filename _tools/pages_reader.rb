@@ -128,6 +128,9 @@ module PagesReader
   end
 
   TEXT_STORAGE = 2001
+  DRAWABLE_ATTACHMENT = 2003
+  IMAGE_ARCHIVE = 3005
+  PACKAGE_METADATA = 11006
 
   # Concatenates the text of every text-storage archive, in document order.
   def document_text(zip_path)
@@ -169,21 +172,177 @@ module PagesReader
     parts.join("\n")
   end
 
-  # Full-size content images, in document order, excluding template presets
-  # and the -small- thumbnails Pages generates alongside each image.
+  # Full-size content images, in the order they sit in the body text.
+  # Zip filenames are insertion IDs, not document position: pairing those
+  # with U+FFFC in text order put the wrong picture on many poems. The
+  # attachment table on the text-storage archive is the mapping Pages
+  # itself uses.
   def image_entries(zip_path)
+    from_text = images_from_attachments(zip_path)
+    return from_text unless from_text.empty?
+
+    zip_image_entries(zip_path)
+  end
+
+  def zip_image_entries(zip_path)
     `unzip -Z1 #{Shellwords.escape(zip_path)}`.split("\n").select do |n|
-      n.start_with?('Data/') &&
-        !n.include?('Preset') &&
-        !n.include?('bullet') &&
-        !n.include?('-small-')
+      content_image?(n)
     end.sort_by { |n| n[/(\d+)\.\w+\z/, 1].to_i }
   end
 
   def extract_image(zip_path, entry, dest)
-    require 'shellwords'
     data = `unzip -p #{Shellwords.escape(zip_path)} #{Shellwords.escape(entry)}`
     File.binwrite(dest, data)
     data.bytesize
+  end
+
+  def content_image?(name)
+    base = name.sub(%r{\AData/}, '')
+    name.start_with?('Data/') &&
+      !base.include?('Preset') &&
+      !base.include?('bullet') &&
+      !base.include?('-small-') &&
+      !base.start_with?('tile_')
+  end
+
+  # --- attachment table -> Data/ path --------------------------------
+
+  def images_from_attachments(zip_path)
+    objects = iwa_objects(zip_path)
+    return [] if objects.empty?
+
+    by_id = {}
+    objects.each { |o| by_id[o[:id]] = o if o[:id] }
+
+    datas = {}
+    objects.select { |o| o[:type] == PACKAGE_METADATA }.each do |o|
+      each_field(o[:payload]) do |f, w, v|
+        next unless f == 4 && w == 2
+        ident = nil
+        pref = fname = nil
+        each_field(v) do |f2, w2, v2|
+          ident = v2 if f2 == 1 && w2.zero?
+          pref = utf8(v2) if f2 == 3 && w2 == 2
+          fname = utf8(v2) if f2 == 4 && w2 == 2
+        end
+        next unless ident
+        name = fname.to_s.empty? ? pref.to_s : fname
+        next if name.empty?
+        datas[ident] = "Data/#{name}"
+      end
+    end
+
+    entries = []
+    objects.select { |o| o[:type] == TEXT_STORAGE }.each do |storage|
+      each_field(storage[:payload]) do |f, w, v|
+        next unless f == 9 && w == 2
+        each_field(v) do |f2, w2, v2|
+          next unless f2 == 1 && w2 == 2
+          att_id = nil
+          each_field(v2) do |f3, w3, v3|
+            att_id = tsp_id(v3) if f3 == 2 && w3 == 2
+          end
+          path = image_path_for_attachment(by_id, datas, att_id)
+          entries << path if path
+        end
+      end
+    end
+    entries
+  end
+
+  def image_path_for_attachment(by_id, datas, att_id)
+    att = by_id[att_id]
+    return nil unless att && att[:type] == DRAWABLE_ATTACHMENT
+    drawable_id = nil
+    each_field(att[:payload]) do |f, w, v|
+      drawable_id = tsp_id(v) if f == 1 && w == 2
+    end
+    drawable = by_id[drawable_id]
+    return nil unless drawable && drawable[:type] == IMAGE_ARCHIVE
+
+    data_id = nil
+    each_field(drawable[:payload]) do |f, w, v|
+      data_id = tsp_id(v) if f == 11 && w == 2
+    end
+    if data_id.nil?
+      refs = drawable[:data_refs] || []
+      data_id = refs.find { |r| datas[r] && content_image?(datas[r]) } ||
+                refs.find { |r| datas[r] }
+    end
+    path = datas[data_id]
+    path if path && content_image?(path)
+  end
+
+  def tsp_id(bytes)
+    ident = nil
+    each_field(bytes) { |f, w, v| ident = v if f == 1 && w.zero? }
+    ident
+  end
+
+  def utf8(bytes)
+    bytes.to_s.dup.force_encoding('UTF-8')
+  end
+
+  def unpack_packed(bytes)
+    out = []
+    i = 0
+    while i < bytes.bytesize
+      v, i = read_varint(bytes, i)
+      break if v.nil?
+      out << v
+    end
+    out
+  end
+
+  def iwa_objects(zip_path)
+    names = `unzip -Z1 #{Shellwords.escape(zip_path)}`.split("\n")
+    objs = []
+    names.each do |entry|
+      next unless entry.end_with?('.iwa')
+      raw = `unzip -p #{Shellwords.escape(zip_path)} #{Shellwords.escape(entry)}`
+      next if raw.nil? || raw.empty?
+      objs.concat(parse_iwa_objects(iwa_chunks(raw.force_encoding('BINARY'))))
+    end
+    objs
+  end
+
+  def parse_iwa_objects(blob)
+    blob = blob.dup.force_encoding('BINARY')
+    objs = []
+    i = 0
+    while i < blob.bytesize
+      hlen, j = read_varint(blob, i)
+      break if hlen.nil? || hlen.zero?
+      info = blob.byteslice(j, hlen)
+      break if info.nil?
+      j += hlen
+      identifier = nil
+      messages = []
+      each_field(info) do |f, wire, v|
+        identifier = v if f == 1 && wire.zero?
+        next unless f == 2 && wire == 2
+        type = len = nil
+        obj_refs = []
+        data_refs = []
+        each_field(v) do |f2, w2, v2|
+          type = v2 if f2 == 1 && w2.zero?
+          len = v2 if f2 == 3 && w2.zero?
+          obj_refs.concat(unpack_packed(v2)) if f2 == 5 && w2 == 2
+          data_refs.concat(unpack_packed(v2)) if f2 == 6 && w2 == 2
+          obj_refs << v2 if f2 == 5 && w2.zero?
+          data_refs << v2 if f2 == 6 && w2.zero?
+        end
+        messages << { type: type, len: len, obj_refs: obj_refs, data_refs: data_refs }
+      end
+      break if messages.empty?
+      messages.each do |m|
+        payload = blob.byteslice(j, m[:len] || 0)
+        j += m[:len] || 0
+        objs << { id: identifier, type: m[:type], obj_refs: m[:obj_refs],
+                  data_refs: m[:data_refs], payload: payload }
+      end
+      i = j
+    end
+    objs
   end
 end

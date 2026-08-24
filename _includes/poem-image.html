@@ -1,0 +1,9 @@
+{%- comment -%}
+First illustration for a Ukrainian poem, if it has one. Pass `images` and `number`.
+{%- endcomment -%}
+{%- assign poem_image = include.images | first -%}
+{%- if poem_image -%}
+<div class="poem-images">
+  <img src="{{ '/assets/poem_images/' | append: poem_image | relative_url }}" alt="Ілюстрація до вірша {{ include.number }}" loading="lazy">
+</div>
+{%- endif -%}

@@ -15,7 +15,8 @@
 #         posts numbered <n>-1, <n>-2, ... in order
 #   N-E   closes a poem: N = number, E = edits. A trailing "*" is recorded
 #         in the log for the author to confirm; it does not change the post.
-#   U+FFFC marks where an image sits, which is how images map to a poem.
+#   U+FFFC marks where an image sits. The matching file comes from the
+#   Pages attachment table (document order), not zip filename order.
 require 'date'
 require 'fileutils'
 require_relative 'pages_reader'
@@ -301,11 +302,34 @@ def fix_homoglyphs(text, changes)
   }.join
 end
 
+# Browsers other than Safari cannot display HEIC, so the public files are
+# JPEG. The Pages source keeps the original.
+def web_ext(entry)
+  ext = File.extname(entry)
+  return '.jpeg' if ext.downcase.match?(/\A\.hei[cf]\z/)
+  ext
+end
+
+def extract_web_image(pages_path, entry, dest)
+  ext = File.extname(entry)
+  unless ext.downcase.match?(/\A\.hei[cf]\z/)
+    PagesReader.extract_image(pages_path, entry, dest)
+    return dest
+  end
+
+  tmp = dest.sub(/\.[^.]+$/i, ext)
+  PagesReader.extract_image(pages_path, entry, tmp)
+  ok = system('sips', '-s', 'format', 'jpeg', tmp, '--out', dest,
+              out: File::NULL, err: File::NULL)
+  File.delete(tmp) if tmp != dest && File.exist?(tmp)
+  dest if ok && File.exist?(dest)
+end
+
 def front_matter(poem, category)
   fm = +"---\nlayout: post\nnumber: #{poem.number}\nedits: #{poem.edits}\ncategories: poems #{category}\n"
   unless poem.images.empty?
     fm << "images:\n"
-    poem.images.each_index { |i| fm << "  - #{poem.number}-#{i + 1}#{File.extname(poem.images[i])}\n" }
+    poem.images.each_index { |i| fm << "  - #{poem.number}-#{i + 1}#{web_ext(poem.images[i])}\n" }
   end
   fm << "---\n\n"
   fm
@@ -387,11 +411,12 @@ if OPTS[:write]
   FileUtils.rm_f(Dir['latin_25/_posts/*.md']) if OPTS[:latin]
   FileUtils.mkdir_p('ukr/_posts')
   FileUtils.mkdir_p(OPTS[:images_dir])
+  FileUtils.rm_f(Dir[File.join(OPTS[:images_dir], '*')])
   FileUtils.mkdir_p('latin_25/_posts') if OPTS[:latin]
   all_poems.each do |p|
     p.images.each_with_index do |entry, i|
-      dest = File.join(OPTS[:images_dir], "#{p.number}-#{i + 1}#{File.extname(entry)}")
-      PagesReader.extract_image(File.join(OPTS[:source], p.source), entry, dest)
+      dest = File.join(OPTS[:images_dir], "#{p.number}-#{i + 1}#{web_ext(entry)}")
+      extract_web_image(File.join(OPTS[:source], p.source), entry, dest)
     end
     File.write("ukr/_posts/#{OPTS[:date]}-#{p.number}-ukr.md", front_matter(p, 'ukr') + preserve_indent(mark_gaps(p.text)) + "\n")
     next unless OPTS[:latin]

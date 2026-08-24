@@ -5,28 +5,21 @@ layout: default
 
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">{{ page.number }}-{{ page.edits }}</h1>
+    {%- if page.author -%}
     <p class="post-meta">
-      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        {{ page.date | date: date_format }}
-      </time>
-      {%- if page.author -%}
-        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
-      {%- endif -%}</p>
+      <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
+    </p>
+    {%- endif -%}
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
     {%- comment -%}
     Images sit above the poem, which is where they appear in the author's
-    documents. They live in front matter rather than in the body, so they show
-    on the post page only and never in the listing pages. Only the Ukrainian
-    show renders them; a poem has at most one image.
+    documents. They live in front matter rather than in the body. Only
+    Ukrainian pages render them; a poem has at most one image.
     {%- endcomment -%}
-    {%- assign poem_image = page.images | first -%}
-    {%- if page.categories contains 'ukr' and poem_image -%}
-    <div class="poem-images">
-      <img src="{{ '/assets/poem_images/' | append: poem_image | relative_url }}" alt="Ілюстрація до вірша {{ page.number }}" loading="lazy">
-    </div>
+    {%- if page.categories contains 'ukr' -%}
+      {% include poem-image.html images=page.images number=page.number %}
     {%- endif -%}
 
     {{ content }}

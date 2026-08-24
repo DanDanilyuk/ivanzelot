@@ -184,8 +184,8 @@ pre {
  * Wrapper
  */
 .wrapper {
-  max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit} * 2));
-  max-width: calc(#{$content-width} - (#{$spacing-unit} * 2));
+  box-sizing: border-box;
+  max-width: $content-width;
   margin-right: auto;
   margin-left: auto;
   padding-right: $spacing-unit;
@@ -193,8 +193,6 @@ pre {
   @extend %clearfix;
 
   @include media-query($on-laptop) {
-    max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
-    max-width: calc(#{$content-width} - (#{$spacing-unit}));
     padding-right: $spacing-unit * 0.5;
     padding-left: $spacing-unit * 0.5;
   }
@@ -434,21 +432,19 @@ table {
 }
 
 /**
- * Poem illustrations (post page only - never rendered in the listings)
+ * Poem illustrations fill the text column on an iPhone 15 (393px) and
+ * smaller. On a wider screen they stay that size and sit centred, so they
+ * do not keep growing with the page.
  */
 .poem-images {
-  margin-bottom: $spacing-unit;
+  margin-bottom: 0.5em;
 
   img {
     display: block;
-    max-width: 100%;
-    // Portrait illustrations are much taller than wide (791 is 1290x1743) and
-    // would otherwise push the poem off the screen. A percentage would need a
-    // parent of definite height, so this is measured against the viewport.
-    max-height: 30vh;
-    width: auto;
+    width: 100%;
+    max-width: 393px;
     height: auto;
-    margin: 0 auto $spacing-unit * 0.5;
+    margin: 0 auto 0.4em;
   }
 }
 
@@ -460,6 +456,13 @@ table {
 .post-data p,
 .post-content p {
   margin-bottom: $base-line-height * 1em;
+  overflow-wrap: break-word;
+}
+
+// Type eases up as the column narrows (16px when wide, ~22px on an iPhone).
+.post-data,
+.post-content.e-content {
+  font-size: clamp(16px, calc(16px + (800px - 100vw) * 9.5 / 370), 22px);
 }
 
 /**

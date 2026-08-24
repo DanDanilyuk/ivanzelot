@@ -34,6 +34,7 @@
     [].forEach.call(el.children, function (child) {
       if (child.classList.contains('number-field')) return;
       if (child.classList.contains('type-field')) return;
+      if (child.classList.contains('poem-images')) return;
       text += ' ' + child.textContent;
     });
     return {

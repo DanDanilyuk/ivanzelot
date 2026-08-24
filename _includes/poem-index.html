@@ -37,6 +37,9 @@ so fall back to an empty list.
 {% endif %}
 
   <div class="post-data" data-number="{{ post.number }}">
+    {%- if include.category == 'ukr' -%}
+      {% include poem-image.html images=post.images number=post.number %}
+    {%- endif -%}
     {{ post.content }}
     <h3 class="number-field">
       <a href="{{ post.url }}">
